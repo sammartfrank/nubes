@@ -8,7 +8,9 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { Users } from '../entities';
 
 Entity('payments');
 export class Payment {
@@ -37,6 +39,9 @@ export class Payment {
     default: PaymentStatusEnum.PENDING,
   })
   payment_status: PaymentStatusEnum;
+
+  @ManyToOne(() => Users, (user) => user.payments)
+  user: Users;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

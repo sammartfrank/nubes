@@ -1,4 +1,4 @@
-import { TableType } from '@/custom.types';
+import { TableTypeEnum } from '@/custom.types';
 
 const DisabledButton = () => {
   return (
@@ -14,8 +14,8 @@ export const TableTypePicker = ({
   noWindowsTablesAvailable,
   noHallTablesAvailable,
 }: {
-  selectedTableType: TableType;
-  handleSelectedTableType: (tableType: TableType) => void;
+  selectedTableType: TableTypeEnum;
+  handleSelectedTableType: (tableType: TableTypeEnum) => void;
   noWindowsTablesAvailable: boolean;
   noHallTablesAvailable: boolean;
 }) => {
@@ -29,9 +29,9 @@ export const TableTypePicker = ({
         <DisabledButton />
       ) : (
         <div
-          onClick={() => handleSelectedTableType(TableType.W)}
+          onClick={() => handleSelectedTableType(TableTypeEnum.W)}
           className={
-            selectedTableType === TableType.W
+            selectedTableType === TableTypeEnum.W
               ? className + selectedTableTypeClassName
               : className
           }
@@ -43,9 +43,9 @@ export const TableTypePicker = ({
         <DisabledButton />
       ) : (
         <div
-          onClick={() => handleSelectedTableType(TableType.H)}
+          onClick={() => handleSelectedTableType(TableTypeEnum.H)}
           className={
-            selectedTableType === TableType.H
+            selectedTableType === TableTypeEnum.H
               ? className + ' border border-gray-800 bg-zinc-800'
               : className
           }
