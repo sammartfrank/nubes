@@ -10,7 +10,7 @@ import { openingHoursConfig } from '@/configs/appConfig';
 import { useAvailabilityByDate } from '../useAvailability/queries/useAvailabilityByDate';
 import { useCreateBookingMutation } from '../useBookings';
 
-import { TableType } from '@/custom.types';
+import { TableTypeEnum } from '@/custom.types';
 import { useTablesQuery } from '../useTables';
 import { BOOKINGS_URL } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
@@ -50,8 +50,8 @@ export const useNewBooking = ({ user, access_token }: NewBookingProps) => {
 
   console.log('🚀 ~ useNewBooking ~ tables:', tables);
 
-  const [selectedTableType, setSelectedTableType] = useState(TableType.W);
-  const handleSelectedTableType = (tableType: TableType) => {
+  const [selectedTableType, setSelectedTableType] = useState(TableTypeEnum.W);
+  const handleSelectedTableType = (tableType: TableTypeEnum) => {
     setSelectedTableType(tableType);
   };
   const [pax, setPax] = useState(1);

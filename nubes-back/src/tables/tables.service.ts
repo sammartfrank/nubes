@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { supabase } from '@/cli';
-import { TableStatus } from 'custom.database.types';
 
 @Injectable()
 export class TablesService {
@@ -37,25 +36,5 @@ export class TablesService {
       .eq('id', id);
     if (error) throw error;
     return data;
-  }
-
-  async updateTableStatus({
-    tableId,
-    status,
-  }: {
-    tableId: string;
-    status: TableStatus;
-  }) {
-    try {
-      const result = await supabase
-        .from('tables')
-        .update({ table_status: status })
-        .eq('id', tableId);
-
-      return result;
-    } catch (error) {
-      console.error('Error updating table status:', error);
-      throw error;
-    }
   }
 }
