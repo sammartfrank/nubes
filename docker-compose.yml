@@ -1,0 +1,16 @@
+services:
+  nubes:
+    build:
+      context: ./nubes/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    command: ["npm", "start"]
+
+  nubes-back:
+    build:
+      context: ./nubes-back/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    command: ["npm", "start"]
