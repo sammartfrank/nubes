@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { supabase } from 'cli';
+import { supabase } from '../../src/cli';
 
 @Injectable()
 export class AvailabilityService {

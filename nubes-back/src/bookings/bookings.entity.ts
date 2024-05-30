@@ -8,7 +8,7 @@ import {
   OneToOne,
 } from 'typeorm';
 
-import { BookingStatus, BookingStatusEnum } from '@/custom.database.types';
+import { BookingStatus, BookingStatusEnum } from '../../custom.database.types';
 
 import { BookingsConfirmed, Payment, Tables, Users } from '../entities';
 
@@ -42,26 +42,17 @@ export class Bookings {
   @ManyToOne(() => Users, (user) => user.bookings)
   user: Users;
 
-  @Column('uuid')
-  user_id: string;
-
   @ManyToOne(() => Tables)
   table: Tables;
+
+  @OneToOne(() => Payment, (payment) => payment.booking)
+  payment: Payment;
 
   @OneToOne(
     () => BookingsConfirmed,
     (booking_confirmed) => booking_confirmed.booking,
   )
   booking_confirmed: BookingsConfirmed;
-
-  @Column('uuid')
-  booking_confirmed_id: string;
-
-  @OneToOne(() => Payment, (payment) => payment.booking_id)
-  payment: Payment;
-
-  @Column({ type: 'uuid' })
-  payment_id: string;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;

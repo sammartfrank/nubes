@@ -1,4 +1,3 @@
-import { PaymentMethodEnum, PaymentStatusEnum } from '@/custom.database.types';
 import {
   IsDate,
   IsEnum,
@@ -6,6 +5,11 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
+
+import {
+  PaymentMethodEnum,
+  PaymentStatusEnum,
+} from '../../../custom.database.types';
 
 export class CreatePaymentDto {
   @IsNotEmpty()

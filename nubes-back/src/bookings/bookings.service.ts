@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { supabase } from '@/cli';
-import { Booking } from 'custom.database.types';
+
+import { supabase } from '../cli/index';
+import { Booking } from '../../custom.database.types';
 import { CreateBookingDto } from './dto/create-bookings.dto';
 
 @Injectable()

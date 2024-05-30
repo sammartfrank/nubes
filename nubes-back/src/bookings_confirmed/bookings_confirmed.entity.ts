@@ -4,34 +4,31 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Bookings, Users, Payment } from '../entities';
 
-@Entity('bookings_confirmed')
+import { Bookings, Payment, Users } from '../entities';
+
+@Entity()
 export class BookingsConfirmed {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => Bookings, (booking) => booking.id)
-  booking: Bookings;
-  @Column('uuid')
-  booking_id: string;
-
-  @OneToOne(() => Payment, (payment) => payment.id)
-  payment: Payment;
-
-  @Column('uuid')
-  payment_id: string;
-
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   payment_amount: number;
 
-  @OneToOne(() => Users, (user) => user.id)
+  @ManyToOne(() => Users, (user) => user.bookings_confirmed)
   user: Users;
 
-  @Column('uuid')
-  user_id: string;
+  @OneToOne(() => Bookings, (booking) => booking.booking_confirmed)
+  @JoinColumn()
+  booking: Bookings;
+
+  @OneToOne(() => Payment, (payment) => payment.booking_confirmed)
+  @JoinColumn()
+  payment: Payment;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

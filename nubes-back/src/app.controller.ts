@@ -1,6 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { AppService } from './app.service';
 import { JWTAuthGuard as SupabaseAuthGuard } from 'nest-supabase-guard';
+
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {

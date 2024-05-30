@@ -1,5 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { JWTAuthGuard as SupabaseAuthGuard } from 'nest-supabase-guard';
+
 import { AvailabilityService } from './availability.service';
 
 @Controller('availability')

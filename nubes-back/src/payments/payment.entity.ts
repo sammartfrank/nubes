@@ -2,6 +2,7 @@ import {
   PaymentMethodEnum,
   PaymentStatusEnum,
 } from '../../custom.database.types';
+
 import {
   PrimaryGeneratedColumn,
   Column,
@@ -9,19 +10,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Users } from '../entities';
 
-Entity('payments');
+import { Bookings, BookingsConfirmed, Users } from '../entities';
+
+@Entity()
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column('uuid')
-  user_id: string;
-
-  @Column('uuid')
-  booking_id: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
   amount: number;
@@ -42,6 +40,16 @@ export class Payment {
 
   @ManyToOne(() => Users, (user) => user.payments)
   user: Users;
+
+  @OneToOne(() => Bookings, (booking) => booking.payment)
+  @JoinColumn()
+  booking: Bookings;
+
+  @OneToOne(
+    () => BookingsConfirmed,
+    (booking_confirmed) => booking_confirmed.payment,
+  )
+  booking_confirmed: BookingsConfirmed;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

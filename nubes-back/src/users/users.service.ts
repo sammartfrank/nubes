@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@supabase/supabase-js';
-import { supabase } from 'cli';
+
+import { User } from '../../custom.database.types';
+import { supabase } from '../../src/cli';
 
 @Injectable()
 export class UsersService {

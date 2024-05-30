@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString, Matches, IsEnum } from 'class-validator';
 
-import { TableType } from 'src/tables/tables.entity';
-import { BookingStatusEnum } from '@/custom.database.types';
+import { TableType } from '../../../src/tables/tables.entity';
+import { BookingStatusEnum } from '../../../custom.database.types';
 
 export class CreateBookingDto {
   @IsNotEmpty()

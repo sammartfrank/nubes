@@ -8,13 +8,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-
-import { BookingsService } from './bookings.service';
-
 import { JWTAuthGuard as SupabaseAuthGuard } from 'nest-supabase-guard';
 
-import { BookingUpdate } from 'custom.database.types';
-
+import { BookingsService } from './bookings.service';
+import { BookingUpdate } from '../../custom.database.types';
 import { CreateBookingDto } from './dto/create-bookings.dto';
 
 @Controller('bookings')

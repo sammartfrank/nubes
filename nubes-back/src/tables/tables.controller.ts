@@ -1,4 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
+
 import { TablesService } from './tables.service';
 
 @Controller('tables')

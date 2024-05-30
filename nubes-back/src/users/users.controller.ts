@@ -1,7 +1,8 @@
 import { Controller, UseGuards } from '@nestjs/common';
 import { Get, Put, Delete, Param, Body } from '@nestjs/common';
-import { UsersService } from './users.service';
 import { JWTAuthGuard as SupabaseAuthGuard } from 'nest-supabase-guard';
+
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {

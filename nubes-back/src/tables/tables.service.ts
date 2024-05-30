@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { supabase } from '@/cli';
+
+import { supabase } from '../../src/cli/index';
 
 @Injectable()
 export class TablesService {

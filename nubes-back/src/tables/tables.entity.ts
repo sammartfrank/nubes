@@ -1,4 +1,3 @@
-import { Bookings } from 'src/bookings/bookings.entity';
 import {
   Entity,
   Column,
@@ -7,6 +6,8 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+
+import { Bookings } from '../../src/bookings/bookings.entity';
 
 export enum TableType {
   W = 'Window',
@@ -43,6 +44,7 @@ export class Tables {
   })
   table_status: TableStatus;
 
+  // Working
   @OneToMany(() => Bookings, (booking) => booking.table)
   bookings: Bookings[];
 
