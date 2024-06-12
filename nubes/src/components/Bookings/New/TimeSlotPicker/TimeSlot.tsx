@@ -15,9 +15,9 @@ export const TimeSlot = ({
 }) => {
   let className = '';
   if (isHovered) {
-    className = 'bg-zinc-600 font-bold';
+    className = 'font-bold';
   } else if (isSelected) {
-    className = 'bg-zinc-600 text-yellow-600 font-bold';
+    className = 'text-primary font-bold';
   }
   return (
     <div
@@ -25,7 +25,7 @@ export const TimeSlot = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={
-        `p-2 cursor-pointer w-100 h-16 items-center flex justify-center text-white  ` +
+        `p-2 cursor-pointer w-100 h-16 items-center flex justify-center text-zinc-600  ` +
         className
       }
     >

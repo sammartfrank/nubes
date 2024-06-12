@@ -30,8 +30,8 @@ export const SignUpForm = () => {
       toast.error('Registro fallido!');
     } else {
       toast.success('Registro Exitoso!');
+      router.push(DASHBOARD_URL);
       router.refresh();
-      router.replace(DASHBOARD_URL);
     }
     setSubmitting(false);
   };

@@ -12,7 +12,8 @@ export class AvailabilityService {
     const { data: bookings, error } = await supabase
       .from('bookings')
       .select('*')
-      .eq('booking_date', date);
+      .gte('booking_date', date)
+      .order('booking_date', { ascending: true });
 
     if (error) {
       throw error;

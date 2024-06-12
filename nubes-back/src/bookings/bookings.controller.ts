@@ -11,8 +11,7 @@ import {
 import { JWTAuthGuard as SupabaseAuthGuard } from 'nest-supabase-guard';
 
 import { BookingsService } from './bookings.service';
-import { BookingUpdate } from '../../custom.database.types';
-import { CreateBookingDto } from './dto/create-bookings.dto';
+import { BookingInsert, BookingUpdate } from '../../custom.database.types';
 
 @Controller('bookings')
 export class BookingsController {
@@ -26,7 +25,7 @@ export class BookingsController {
 
   @UseGuards(SupabaseAuthGuard)
   @Post()
-  async createBooking(@Body() createBookingDto: CreateBookingDto) {
+  async createBooking(@Body() createBookingDto: BookingInsert) {
     return this.bookingsService.createBooking(createBookingDto);
   }
   @UseGuards(SupabaseAuthGuard)

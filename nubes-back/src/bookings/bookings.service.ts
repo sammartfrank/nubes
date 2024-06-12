@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { supabase } from '../cli/index';
-import { Booking } from '../../custom.database.types';
-import { CreateBookingDto } from './dto/create-bookings.dto';
+import { sendEmail, supabase } from '../cli/index';
+import { Booking, BookingInsert } from '../../custom.database.types';
 
 @Injectable()
 export class BookingsService {
@@ -20,13 +19,11 @@ export class BookingsService {
     return data as Booking[];
   }
 
-  async createBooking(createBookingDto: CreateBookingDto) {
+  async createBooking(createBookingDto: BookingInsert) {
     try {
       const bookingResult = await supabase
         .from('bookings')
         .insert([{ ...createBookingDto }]);
-
-      console.log('Booking Result:', bookingResult);
 
       if (bookingResult.error) {
         console.log('Booking Error:', bookingResult.error);
@@ -35,7 +32,21 @@ export class BookingsService {
         );
       }
 
-      return { bookingResult };
+      const result = await sendEmail({
+        subject: 'Booking Confirmation',
+        config: {
+          booking_name: createBookingDto.booking_name,
+          booking_date: createBookingDto.booking_date,
+          booking_time: createBookingDto.booking_time,
+        },
+      });
+
+      console.log({ result });
+
+      return {
+        bookingResult,
+        message: 'Booking created successfully',
+      };
     } catch (error) {
       console.log('Error:', error);
       throw error;

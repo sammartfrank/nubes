@@ -1,22 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { NewBookingProps } from '../../components/Bookings/New';
 import { generateTimeSlots } from '@/src/components/Bookings/utils';
 import { openingHoursConfig } from '@/configs/appConfig';
 import { useAvailabilityByDate } from '../useAvailability/queries/useAvailabilityByDate';
 import { useCreateBookingMutation } from '../useBookings';
 
-import { TableTypeEnum } from '@/custom.types';
+import { BookingStatusEnum, TableTypeEnum } from '@/custom.types';
 import { useTablesQuery } from '../useTables';
 import { BOOKINGS_URL } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 
-export const useNewBooking = ({ user, access_token }: NewBookingProps) => {
+export const useNewBooking = ({
+  user,
+  access_token,
+}: {
+  user: any;
+  access_token: string;
+}) => {
   const router = useRouter();
+
   const createBookingMutation = useCreateBookingMutation({
     access_token,
   });
@@ -38,17 +44,45 @@ export const useNewBooking = ({ user, access_token }: NewBookingProps) => {
     setSelectedTime(date);
   };
 
+  const date = selectedDate.toISOString().split('T')[0];
   const { availability = [], isLoading: isLoadingAvailability } =
     useAvailabilityByDate({
-      selectedDate: selectedDate.toISOString().split('T')[0],
+      selectedDate: date,
       access_token,
     });
+
+  // We need to make an object with the dates that have bookings. Or
+  // const datesBooked = useMemo(() => {
+  //   const uniqueDates = Array.from(
+  //     new Set(availability.map((date) => new Date(date.booking_date))),
+  //   );
+  //   return uniqueDates;
+  // }, [availability]);
+
+  // we need to get the times booked on the date selected if there are any
+  // const timeslotsBooked = useMemo(
+  //   () =>
+  //     availability?.reduce((acc, curr) => {
+  //       // we need to each booking_date: [booking_time]
+  //       const bookingTime = curr?.booking_time;
+  //       const bookingDate = curr?.booking_date;
+
+  //       if (!acc[bookingDate]) {
+  //         acc[bookingDate] = new Set();
+  //       }
+
+  //       acc[bookingDate].add(bookingTime);
+
+  //       return acc;
+  //     }, {} as Record<string, Set<string>>),
+  //   [availability],
+  // );
+  // console.log('🚀 ~ timeslotsBooked:', timeslotsBooked);
 
   const { data: tables = [], isLoading: isLoadingTables } = useTablesQuery({
     access_token,
   });
-
-  console.log('🚀 ~ useNewBooking ~ tables:', tables);
+  console.log('🚀 ~ tables:', tables);
 
   const [selectedTableType, setSelectedTableType] = useState(TableTypeEnum.W);
   const handleSelectedTableType = (tableType: TableTypeEnum) => {
@@ -88,7 +122,6 @@ export const useNewBooking = ({ user, access_token }: NewBookingProps) => {
   //   ).length === 0;
 
   const handleBooking = async () => {
-    
     const formattedDate = selectedDate.toISOString().split('T')[0];
     const formattedTime = selectedTime
       ?.toISOString()
@@ -97,14 +130,14 @@ export const useNewBooking = ({ user, access_token }: NewBookingProps) => {
 
     const booking = {
       booking_date: formattedDate,
+      booking_status: BookingStatusEnum.PENDING,
+      tableId: tables[0]?.id,
+      userId: user?.id as string,
       booking_time: formattedTime,
       booking_name: user?.email as string,
       booking_details: '',
       pax,
-      userId: user?.id as string,
     };
-
-    console.log('{ payload }', booking);
 
     if (!selectedDate || !selectedTime || !pax) {
       setError('Por favor, complete todos los campos antes de enviar.');
@@ -143,6 +176,8 @@ export const useNewBooking = ({ user, access_token }: NewBookingProps) => {
     handleDateChange,
     handleSelectedPax,
     handleSelectedTableType,
+    // datesBooked,
+    // timeslotsBooked,
     timeSlots,
     selectedTime,
     setSelectedTime,

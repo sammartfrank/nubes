@@ -5,7 +5,7 @@ import { Providers } from './providers';
 
 import './globals.css';
 import { navbarConfig } from '@/configs/appConfig';
-import { ConfirmationProvider } from '@/src/components/Confirmation';
+import { ADMIN_ROLE } from '@/utils/constants';
 
 const lato = Lato({ weight: '400', subsets: ['latin'] });
 
@@ -15,8 +15,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: 'Las Nubes | Reservas. Un producto de Manantiales Apart Hotels.',
-  description: 'Una manera simple y rapida para reservar tu mesa en Las Nubes bar',
+  title: 'Las Nubes café | Un producto de Manantiales Apart Hotels.',
+  description:
+    'Una manera simple y rapida para reservar tu mesa en Las Nubes café',
 };
 
 export default async function RootLayout({
@@ -29,13 +30,18 @@ export default async function RootLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
+  const links =
+    user?.role === ADMIN_ROLE
+      ? navbarConfig.admin
+      : user
+      ? navbarConfig.authenticated
+      : navbarConfig.loggedOut;
+
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={lato.className}>
-        <ConfirmationProvider>
-          <Navbar user={user} config={navbarConfig} />
-          <Providers>{children}</Providers>
-        </ConfirmationProvider>
+        <Navbar links={links} />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

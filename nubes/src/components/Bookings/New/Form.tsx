@@ -5,10 +5,16 @@ import { TimeSlotPicker } from './TimeSlotPicker/TimeSlotPicker';
 import { TableTypePicker } from './TableTypePicker';
 import { PaxPicker } from './PaxPicker';
 import { useNewBooking } from '@/src/hooks/useNewBooking/useNewBooking';
-import { NewBookingProps } from '.';
 import { ToastContainer } from 'react-toastify';
+import { User } from '@supabase/supabase-js';
 
-export const NewBookingForm = ({ user, access_token }: NewBookingProps) => {
+export const NewBookingForm = ({
+  user,
+  access_token,
+}: {
+  user: User | null;
+  access_token: string;
+}) => {
   const {
     selectedDate,
     handleDateChange,
@@ -28,8 +34,8 @@ export const NewBookingForm = ({ user, access_token }: NewBookingProps) => {
   } = useNewBooking({ user, access_token });
 
   return (
-    <form className="flex flex-col space-y-4 text-center text-zinc-900">
-      <div className="flex justify-between  gap-10">
+    <form className="flex flex-col space-y-4 text-center">
+      <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full max-h-full">
           <div className="flex flex-1" onClick={(e) => e.stopPropagation()}>
             <LocalDatePicker
@@ -64,7 +70,7 @@ export const NewBookingForm = ({ user, access_token }: NewBookingProps) => {
           <button
             onClick={handleBooking}
             type="button"
-            className="p-2 bg-zinc-700 text-white rounded-md hover:bg-zinc-900"
+            className="p-3 bg-primary text-white rounded-md hover:bg-primary-foreground hover:text-primary"
           >
             Hace tu Reserva
           </button>

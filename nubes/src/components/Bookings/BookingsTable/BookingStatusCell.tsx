@@ -1,4 +1,4 @@
-import { Bookings, BookingStatus } from '@/custom.types';
+import { Bookings, BookingStatus, BookingStatusEnum } from '@/custom.types';
 import {
   CheckCircledIcon,
   CrossCircledIcon,
@@ -20,20 +20,20 @@ export const statuses: Array<{
   className: string;
 }> = [
   {
-    value: 'pending',
-    label: 'Pending',
+    value: BookingStatusEnum.PENDING,
+    label: 'Pendiente',
     icon: StopwatchIcon,
     className: 'text-yellow-500 bg-yellow-100',
   },
   {
-    value: 'approved',
-    label: 'Approved',
+    value: BookingStatusEnum.APPROVED,
+    label: 'Aprovada',
     icon: CheckCircledIcon,
     className: 'text-green-500 bg-green-100',
   },
   {
-    value: 'cancelled',
-    label: 'Canceled',
+    value: BookingStatusEnum.CANCELLED,
+    label: 'Cancelada',
     icon: CrossCircledIcon,
     className: 'text-red-500 bg-red-100',
   },

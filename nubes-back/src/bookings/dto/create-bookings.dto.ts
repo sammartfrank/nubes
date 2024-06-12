@@ -19,9 +19,9 @@ export class CreateBookingDto {
   @IsString()
   booking_date: string;
 
-  @IsNotEmpty()
-  @Matches(/^(0[1-9]|1[0-2]):[0-5][0-9]:[0-5][0-9]$/, {
-    message: 'Time must be in the format hh:mm:ss',
+  @IsNotEmpty({ message: 'Booking time is required' })
+  @Matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/, {
+    message: 'Booking time must be in the format HH:mm:ss',
   })
   booking_time: string;
 
@@ -34,9 +34,9 @@ export class CreateBookingDto {
 
   @IsNotEmpty()
   @IsString()
-  table_id: string;
+  tableId: string;
 
   @IsNotEmpty()
   @IsString()
-  user_id: string;
+  userId: string;
 }

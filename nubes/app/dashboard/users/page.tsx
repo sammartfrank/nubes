@@ -1,31 +1,13 @@
-import { LOGIN_URL } from '@/utils/constants';
-import { createClient } from '@/utils/supabase/server';
-import { User } from '@supabase/supabase-js';
+import { useUsersQuery } from '@/src/hooks';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
 export default async function UsersPage() {
-  const supabase = createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session) {
-    redirect(LOGIN_URL);
-  }
-
-  const response = await fetch(`${process.env.BACKEND_URL}/users`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${session?.access_token}`,
-    },
-  });
-  const result = (await response.json()) as User[];
+  const { data } = useUsersQuery();
 
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="flex space-x-4 text-white">
-        {result?.map((user) => (
+        {data?.map((user) => (
           <Link
             key={user.id}
             href={`/dashboard/users/${user.id}`}

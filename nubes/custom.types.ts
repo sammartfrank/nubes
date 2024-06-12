@@ -21,6 +21,11 @@ export enum TableTypeEnum {
   H = 'Hall',
 }
 
+export enum BookingStatusEnum {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  CANCELLED = 'CANCELLED',
+}
 
 export type Bookings = Table<'bookings'>;
 export type BookingsInsert = TablesInsert<'bookings'>;

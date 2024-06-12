@@ -66,6 +66,106 @@ export type Database = {
           },
         ]
       }
+      bookings_confirmed: {
+        Row: {
+          bookingId: string | null
+          created_at: string
+          id: string
+          payment_amount: number
+          paymentId: string | null
+          updated_at: string
+          userId: string | null
+        }
+        Insert: {
+          bookingId?: string | null
+          created_at?: string
+          id?: string
+          payment_amount: number
+          paymentId?: string | null
+          updated_at?: string
+          userId?: string | null
+        }
+        Update: {
+          bookingId?: string | null
+          created_at?: string
+          id?: string
+          payment_amount?: number
+          paymentId?: string | null
+          updated_at?: string
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "FK_0796e8f46e635bef5f5b73a704f"
+            columns: ["paymentId"]
+            isOneToOne: true
+            referencedRelation: "payment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "FK_6d88c69fb237e08564ca4d940f2"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "FK_8547427ab1f12be2f7576e67320"
+            columns: ["bookingId"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment: {
+        Row: {
+          amount: number
+          bookingId: string | null
+          created_at: string
+          id: string
+          payment_method: Database["public"]["Enums"]["payment_payment_method_enum"]
+          payment_status: Database["public"]["Enums"]["payment_payment_status_enum"]
+          updated_at: string
+          userId: string | null
+        }
+        Insert: {
+          amount: number
+          bookingId?: string | null
+          created_at?: string
+          id?: string
+          payment_method?: Database["public"]["Enums"]["payment_payment_method_enum"]
+          payment_status?: Database["public"]["Enums"]["payment_payment_status_enum"]
+          updated_at?: string
+          userId?: string | null
+        }
+        Update: {
+          amount?: number
+          bookingId?: string | null
+          created_at?: string
+          id?: string
+          payment_method?: Database["public"]["Enums"]["payment_payment_method_enum"]
+          payment_status?: Database["public"]["Enums"]["payment_payment_status_enum"]
+          updated_at?: string
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "FK_5738278c92c15e1ec9d27e3a098"
+            columns: ["bookingId"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "FK_b046318e0b341a7f72110b75857"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tables: {
         Row: {
           created_at: string
@@ -125,7 +225,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      bookings_booking_status_enum: "pending" | "approved" | "cancelled"
+      bookings_booking_status_enum: "PENDING" | "APPROVED" | "CANCELLED"
+      payment_payment_method_enum: "card"
+      payment_payment_status_enum: "pending" | "succeeded" | "cancelled"
       tables_table_status_enum: "BOOKED" | "AVAILABLE"
       tables_table_type_enum: "Window" | "Hall"
     }

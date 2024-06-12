@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/client';
 import { AuthError } from '@supabase/supabase-js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { DASHBOARD_URL } from '@/utils/constants';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -18,16 +19,17 @@ export const LoginForm = () => {
     e.preventDefault();
     setSubmitting(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
     });
+    console.log({ data, error });
 
     if (error) {
       setError(error);
       toast.error('Acceso fallido!');
     } else {
       toast.success('Acceso satisfactorio!');
+      router.push(DASHBOARD_URL);
       router.refresh();
     }
     setSubmitting(false);

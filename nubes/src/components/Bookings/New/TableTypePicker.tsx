@@ -2,7 +2,7 @@ import { TableTypeEnum } from '@/custom.types';
 
 const DisabledButton = () => {
   return (
-    <div className="bg-zinc-600 w-[385px] text-gray-200 border p-4 rounded border-zinc-600 cursor-not-allowed">
+    <div className="bg-primary w-full text-white border p-4 rounded border-primary cursor-not-allowed">
       No disponible
     </div>
   );
@@ -20,20 +20,17 @@ export const TableTypePicker = ({
   noHallTablesAvailable: boolean;
 }) => {
   const className =
-    'flex justify-center w-[385px] hover:bg-zinc-600 p-4 rounded-md cursor-pointer';
-  const selectedTableTypeClassName = ' border border-gray-800 bg-zinc-800';
+    'flex justify-center w-full hover:bg-primary hover:text-white p-4 rounded-md cursor-pointer';
 
   return (
-    <div className="flex justify-between gap-3 items-center py-2 text-white">
+    <div className="flex flex-col lg:flex-row justify-between gap-3 items-center py-2 text-foreground">
       {noWindowsTablesAvailable ? (
         <DisabledButton />
       ) : (
         <div
           onClick={() => handleSelectedTableType(TableTypeEnum.W)}
           className={
-            selectedTableType === TableTypeEnum.W
-              ? className + selectedTableTypeClassName
-              : className
+            selectedTableType === TableTypeEnum.W ? className : className
           }
         >
           Ventana
@@ -45,9 +42,7 @@ export const TableTypePicker = ({
         <div
           onClick={() => handleSelectedTableType(TableTypeEnum.H)}
           className={
-            selectedTableType === TableTypeEnum.H
-              ? className + ' border border-gray-800 bg-zinc-800'
-              : className
+            selectedTableType === TableTypeEnum.H ? className : className
           }
         >
           Pasillo

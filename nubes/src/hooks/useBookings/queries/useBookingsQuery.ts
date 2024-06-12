@@ -4,7 +4,7 @@ import { bookingsRequest } from '../../utils/request';
 
 import { Bookings } from '@/custom.types';
 
-export const useBookingsQuery = (access_token: string) =>
+export const useBookingsQuery = (access_token?: string) =>
   useQuery({
     queryKey: ['getBookings'],
     queryFn: () =>

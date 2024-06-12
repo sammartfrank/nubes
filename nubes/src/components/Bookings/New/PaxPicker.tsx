@@ -1,4 +1,4 @@
-import { UserOutlined as UserIcon } from '@ant-design/icons'
+import { UserOutlined as UserIcon } from '@ant-design/icons';
 
 export const PaxPicker = ({
   pax,
@@ -16,14 +16,16 @@ export const PaxPicker = ({
   };
   if (noTables) return null;
   return (
-    <div className="flex justify-around items-center p-2 text-white h-[80px]">
-      <label htmlFor="pax" className="text-lg font-bold">Número de Comensales</label>
+    <div className="flex justify-around items-center p-2 text-foreground h-[80px]">
+      <label htmlFor="pax" className="text-lg font-bold">
+        Número de Comensales
+      </label>
       <div className="flex">
         {[...Array(tableCapacity)].map((_, i) => (
-          <UserIcon 
-            key={i} 
-            className={`h-6 w-6 ${i < pax ? 'text-zinc-900' : 'text-gray-300'}`} 
-            onClick={() => handlePaxClick(i + 1)} 
+          <UserIcon
+            key={i}
+            className={`h-6 w-6 ${i < pax ? 'text-primary' : 'text-muted'}`}
+            onClick={() => handlePaxClick(i + 1)}
           />
         ))}
       </div>

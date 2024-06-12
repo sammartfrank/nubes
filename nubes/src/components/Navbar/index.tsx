@@ -1,49 +1,43 @@
 import Link from 'next/link';
+import { WiCloudy } from 'react-icons/wi';
 
 import { AuthButton } from './AuthButton';
-import { User } from '@supabase/supabase-js';
-import { WiCloudy } from 'react-icons/wi';
-import { ADMIN_ROLE } from '@/utils/constants';
-import { NavbarConfig } from '@/custom.types';
+import { HOME_URL } from '@/utils/constants';
 
 export const Navbar = async ({
-  user,
-  config,
+  links,
 }: {
-  user: User | null;
-  config: NavbarConfig;
+  links: {
+    href: string;
+    text: string;
+  }[];
 }) => {
-  const links =
-    user?.role === ADMIN_ROLE
-      ? config.admin
-      : user
-      ? config.authenticated
-      : config.loggedOut;
-
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-gray-800 p-6 border-b border-zinc-900">
-      <div className="flex items-center flex-shrink-0 text-white mr-6">
-        <span className="font-semibold text-xl tracking-tight">
-          <WiCloudy size={50} />
-        </span>
+    <nav className="container flex items-center justify-between flex-wrap bg-background p-2">
+      <div className="flex items-center gap-2 flex-shrink-0 text-foreground mr-6">
+        <Link
+          className="font-semibold text-xl tracking-tight hover:text-zinc-500"
+          href={HOME_URL}
+        >
+          <WiCloudy size={30} />
+        </Link>
+        Las Nubes
       </div>
-      <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div className="text-sm lg:flex-grow">
+      <div className="flex flex-row items-center flex-grow ">
+        <div className="text-sm flex-grow flex flex-row  items-center justify-between">
           {links.map(({ href, text }) => (
             <Link
               key={href}
               href={href}
-              className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4"
+              className="block lg:inline-block text-foreground hover:text-zinc-500 mr-4"
             >
               {text}
             </Link>
           ))}
         </div>
-        <>
-          <span className="dark:text-white text-zinc-50 ml-4 cursor-pointer">
-            {user && <AuthButton />}
-          </span>
-        </>
+        <span className="dark:text-foreground text-muted ml-4 cursor-pointer">
+          <AuthButton />
+        </span>
       </div>
     </nav>
   );

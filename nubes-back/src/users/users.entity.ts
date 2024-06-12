@@ -17,6 +17,12 @@ export class Users {
   @Column({ unique: true })
   email: string;
 
+  @Column()
+  avatar_url: string;
+
+  @Column()
+  full_name: string;
+
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
 

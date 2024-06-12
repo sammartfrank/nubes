@@ -5,9 +5,7 @@ import {
   BOOKINGS_URL,
   DASHBOARD_URL,
   HOME_URL,
-  LOGIN_URL,
   NEW_BOOKING_URL,
-  SIGNUP_URL,
 } from '@/utils/constants';
 
 export const navbarConfig: NavbarConfig = {
@@ -16,15 +14,8 @@ export const navbarConfig: NavbarConfig = {
     { href: `${ADMIN_PAGE_URL}/bookings`, text: 'Bookings' },
     { href: `${ADMIN_PAGE_URL}/users`, text: 'Users' },
   ],
-  authenticated: [
-    { href: DASHBOARD_URL, text: 'Inicio' },
-    { href: BOOKINGS_URL, text: 'Reservas' },
-  ],
-  loggedOut: [
-    { href: HOME_URL, text: 'Inicio' },
-    { href: SIGNUP_URL, text: 'Registrarse' },
-    { href: LOGIN_URL, text: 'Acceder' },
-  ],
+  authenticated: [{ href: BOOKINGS_URL, text: 'Reservas' }],
+  loggedOut: [],
 };
 
 export const homeConfig = {
@@ -35,11 +26,11 @@ export const homeConfig = {
 
 export const dashboardConfig = {
   newBookingUrl: NEW_BOOKING_URL,
-  dashboardTitle: 'Bienvenidos a Las Nubes Cafe!',
+  dashboardTitle: 'Las Nubes',
   dashboardSubtitle:
     'Nuestra cafeteria está abierta toda la semana, de 8 a.m. a 00 a.m.',
   dashboardDescription:
-    'Comenzá haciendo una reserva para disfrutar de nuestra excelente grastronomía y únicas vistas.',
+    'Comenzá haciendo una reserva para disfrutar de nuestras únicas vistas.',
   dashboardCTA: 'Reservá una mesa!',
 };
 

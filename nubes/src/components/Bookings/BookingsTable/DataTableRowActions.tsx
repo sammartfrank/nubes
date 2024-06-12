@@ -7,32 +7,22 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { labels } from './Columns';
-
-// import { labels } from '../data/data';
-
-// import { taskSchema } from '../data/schema';
+import { Bookings } from '@/custom.types';
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>;
+  row: Bookings;
+  handleOnClick: (val: Bookings) => void;
 }
 
 export function DataTableRowActions<TData>({
   row,
+  handleOnClick,
 }: DataTableRowActionsProps<TData>) {
-    
-//   const task = taskSchema.parse(row.original);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,20 +35,12 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Ver Detalles</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {/* <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Info</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={'VALUE TESTING'}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub> */}
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => handleOnClick(row)}
+        >
+          Ver detalles
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           Eliminar

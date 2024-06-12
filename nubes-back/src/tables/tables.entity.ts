@@ -44,7 +44,6 @@ export class Tables {
   })
   table_status: TableStatus;
 
-  // Working
   @OneToMany(() => Bookings, (booking) => booking.table)
   bookings: Bookings[];
 
