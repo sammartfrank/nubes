@@ -5,8 +5,6 @@ import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { variables } from './i18n';
 
-const redirectUrl = process.env.NEXT_PUBLIC_AUTH_URL;
-
 export const AuthComponent = () => {
   const supabase = createClient();
   return (
@@ -14,7 +12,7 @@ export const AuthComponent = () => {
       supabaseClient={supabase}
       appearance={{ theme: ThemeSupa }}
       providers={['google']}
-      redirectTo={redirectUrl}
+      redirectTo={process.env.NEXT_PUBLIC_OAUTH_REDIRECT_URL}
       onlyThirdPartyProviders
       localization={variables}
       view="sign_up"
