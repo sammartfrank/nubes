@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,10 +27,14 @@ export const useNewBooking = ({
     access_token,
   });
 
-  const timeSlots = generateTimeSlots({
-    openingHour: openingHoursConfig.opening,
-    closingHour: openingHoursConfig.close,
-  });
+  const timeSlots = useMemo(
+    () =>
+      generateTimeSlots({
+        openingHour: openingHoursConfig.opening,
+        closingHour: openingHoursConfig.close,
+      }),
+    [],
+  );
 
   const [error, setError] = useState('');
 
@@ -121,7 +125,7 @@ export const useNewBooking = ({
   //     (table) => table.table_type === TableType.H.toString(),
   //   ).length === 0;
 
-  const handleBooking = async () => {
+  const handleBooking = useCallback(async () => {
     const formattedDate = selectedDate.toISOString().split('T')[0];
     const formattedTime = selectedTime
       ?.toISOString()
@@ -162,7 +166,7 @@ export const useNewBooking = ({
         },
       },
     );
-  };
+  }, []);
 
   const noWindowsTablesAvailable = false;
   const noHallTablesAvailable = true;

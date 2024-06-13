@@ -24,7 +24,7 @@ export const PaxPicker = ({
         {[...Array(tableCapacity)].map((_, i) => (
           <UserIcon
             key={i}
-            className={`h-6 w-6 ${i < pax ? 'text-primary' : 'text-muted'}`}
+            className={`h-6 w-6 ${i < pax ? 'text-primary' : 'text-zinc-300'}`}
             onClick={() => handlePaxClick(i + 1)}
           />
         ))}

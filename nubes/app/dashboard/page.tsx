@@ -13,7 +13,9 @@ export default async function DashboardPage() {
   return (
     <div className="flex justify-center items-center h-[calc(100vh-160px)] container">
       <div className="flex flex-col space-y-4 text-center text-foreground dark:text-white">
-        <h1 className="font-bold mb-2 text-4xl">{dashboardTitle}</h1>
+        <h1 className="mb-2 text-4xl" style={{ fontWeight: 900 }}>
+          {dashboardTitle}
+        </h1>
         <p className="text-foreground">{dashboardSubtitle}</p>
         <p className="text-foreground">{dashboardDescription}</p>
         <Link

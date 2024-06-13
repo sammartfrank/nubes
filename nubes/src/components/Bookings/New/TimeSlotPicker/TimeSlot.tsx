@@ -15,9 +15,10 @@ export const TimeSlot = ({
 }) => {
   let className = '';
   if (isHovered) {
-    className = 'font-bold';
+    className = 'font-bold border border-border rounded-lg bg-zinc-100';
   } else if (isSelected) {
-    className = 'text-primary font-bold';
+    className =
+      'text-primary font-bold border border-border rounded-lg bg-zinc-100';
   }
   return (
     <div
