@@ -20,6 +20,7 @@ export const TimeSlot = ({
     className =
       'text-primary font-bold border border-border rounded-lg bg-zinc-100';
   }
+
   return (
     <div
       onClick={() => handleClick(slotTime)}

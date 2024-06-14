@@ -13,7 +13,7 @@ export default async function NewBookingPage() {
   } = await supabase.auth.getSession();
 
   return (
-    <div className="lg:w-[900px] mx-auto flex items-center justify-center mt-24">
+    <div className="container mx-auto flex items-center justify-center mt-24">
       <NewBookingForm user={user} access_token={session?.access_token!} />
     </div>
   );

@@ -16,7 +16,7 @@ export const PaxPicker = ({
   };
   if (noTables) return null;
   return (
-    <div className="flex justify-around items-center p-2 text-foreground h-[80px]">
+    <div className="flex justify-around items-center p-2 text-foreground h-[80px] border border-border rounded-lg">
       <label htmlFor="pax" className="text-lg font-bold">
         Número de Comensales
       </label>

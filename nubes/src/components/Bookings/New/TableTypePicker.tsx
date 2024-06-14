@@ -14,7 +14,7 @@ export const TableTypePicker = ({
   noWindowsTablesAvailable,
   noHallTablesAvailable,
 }: {
-  selectedTableType: TableTypeEnum;
+  selectedTableType: TableTypeEnum | null;
   handleSelectedTableType: (tableType: TableTypeEnum) => void;
   noWindowsTablesAvailable: boolean;
   noHallTablesAvailable: boolean;
@@ -25,7 +25,7 @@ export const TableTypePicker = ({
     'flex justify-center w-full border border-border rounded-md bg-zinc-100 text-primary font-bold p-4 cursor-pointer';
 
   return (
-    <div className="flex flex-col lg:flex-row justify-between gap-3 items-center py-2 text-foreground">
+    <div className="flex flex-col lg:flex-row justify-between gap-2 items-center py-2 text-foreground">
       {noWindowsTablesAvailable ? (
         <DisabledButton />
       ) : (
@@ -46,7 +46,9 @@ export const TableTypePicker = ({
         <div
           onClick={() => handleSelectedTableType(TableTypeEnum.H)}
           className={
-            selectedTableType === TableTypeEnum.H ? className : className
+            selectedTableType === TableTypeEnum.H
+              ? selectedClassName
+              : className
           }
         >
           Pasillo

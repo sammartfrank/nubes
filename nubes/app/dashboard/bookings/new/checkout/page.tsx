@@ -4,12 +4,15 @@ import { Preference } from 'mercadopago';
 
 export default async function CheckoutsPage() {
   const preference = new Preference(client);
-
   const preferenceCreated = await preference.create({
     body: {
       items: [BOOKING_ITEM],
     },
   });
 
-  return <Checkout preferenceId={preferenceCreated.id!} />;
+  return (
+    <>
+      <Checkout preferenceId={preferenceCreated.id!} />
+    </>
+  );
 }

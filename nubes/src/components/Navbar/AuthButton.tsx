@@ -20,7 +20,7 @@ export const AuthButton = async () => {
   return (
     <div className="flex items-center gap-4 text-primary">
       <div className="hidden md:flex">
-        Hola!, {user?.user_metadata.full_name}!
+        Hola, {user?.user_metadata.full_name}!
       </div>
       <form action={signOut}>
         <button className="p-1 lg:p-2 border border-border shadow-sm rounded-lg hover:bg-primary hover:text-primary-foreground hover:border-transparent">

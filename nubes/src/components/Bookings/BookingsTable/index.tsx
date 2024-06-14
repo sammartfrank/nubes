@@ -152,7 +152,14 @@ export function BookingsTable<TData, TValue>({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Fecha" />
       ),
-      cell: ({ row }) => <div>{row.getValue('booking_date')}</div>,
+      cell: ({ row }) => {
+        const formatedDate = new Date(
+          row.getValue('booking_date'),
+        ).toLocaleDateString('es-ES');
+        console.log({ formatedDate });
+
+        return <div>{row.getValue('booking_date')}</div>;
+      },
     },
     {
       accessorKey: 'booking_time',

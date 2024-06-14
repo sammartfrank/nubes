@@ -9,7 +9,7 @@ import { openingHoursConfig } from '@/configs/appConfig';
 import { useAvailabilityByDate } from '../useAvailability/queries/useAvailabilityByDate';
 import { useCreateBookingMutation } from '../useBookings';
 
-import { BookingStatusEnum, TableTypeEnum } from '@/custom.types';
+import { Bookings, BookingStatusEnum, TableTypeEnum } from '@/custom.types';
 import { useTablesQuery } from '../useTables';
 import { BOOKINGS_URL } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
@@ -38,11 +38,14 @@ export const useNewBooking = ({
 
   const [error, setError] = useState('');
 
+  const [openModal, setIsOpenModal] = useState(false);
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
   };
   const [selectedTime, setSelectedTime] = useState<Date | undefined>();
+
   const handleTimeSelection = (date: Date) => {
     if (selectedTime === date) return;
     setSelectedTime(date);
@@ -81,17 +84,17 @@ export const useNewBooking = ({
   //     }, {} as Record<string, Set<string>>),
   //   [availability],
   // );
-  // console.log('🚀 ~ timeslotsBooked:', timeslotsBooked);
 
   const { data: tables = [], isLoading: isLoadingTables } = useTablesQuery({
     access_token,
   });
-  console.log('🚀 ~ tables:', tables);
 
-  const [selectedTableType, setSelectedTableType] = useState(TableTypeEnum.W);
+  const [selectedTableType, setSelectedTableType] =
+    useState<TableTypeEnum | null>(null);
   const handleSelectedTableType = (tableType: TableTypeEnum) => {
     setSelectedTableType(tableType);
   };
+
   const [pax, setPax] = useState(1);
   const handleSelectedPax = (pax: number) => {
     setPax(pax);
@@ -100,12 +103,10 @@ export const useNewBooking = ({
   // const availableTables = tables.filter(
   //   (table) => table.table_status === TableStatus.AVAILABLE,
   // );
-  // console.log("🚀 ~ useNewBooking ~ availableTables:", availableTables)
 
   // const availableTablesByType = availableTables.filter(
   //   (table) => table.table_type === selectedTableType.toString(),
   // );
-  // console.log("🚀 ~ useNewBooking ~ availableTablesByType:", availableTablesByType)
 
   // we make sure to provide the highest amount of pax available for the selected table type.
   // const sortedTablesByCapacity = availableTablesByType.sort(
@@ -125,13 +126,13 @@ export const useNewBooking = ({
   //     (table) => table.table_type === TableType.H.toString(),
   //   ).length === 0;
 
-  const handleBooking = useCallback(async () => {
-    const formattedDate = selectedDate.toISOString().split('T')[0];
-    const formattedTime = selectedTime
-      ?.toISOString()
-      .split('T')[1]
-      .substring(0, 8) as string;
+  const formattedDate = selectedDate.toISOString().split('T')[0];
+  const formattedTime = selectedTime
+    ?.toISOString()
+    .split('T')[1]
+    .substring(0, 8) as string;
 
+  const handleBooking = useCallback(async () => {
     const booking = {
       booking_date: formattedDate,
       booking_status: BookingStatusEnum.PENDING,
@@ -166,13 +167,35 @@ export const useNewBooking = ({
         },
       },
     );
-  }, []);
+  }, [
+    createBookingMutation,
+    formattedDate,
+    formattedTime,
+    pax,
+    selectedDate,
+    selectedTime,
+    setError,
+    tables,
+    router,
+    user,
+  ]);
 
   const noWindowsTablesAvailable = false;
-  const noHallTablesAvailable = true;
+  const noHallTablesAvailable = false;
 
   const noTablesAvailable =
     noWindowsTablesAvailable && noWindowsTablesAvailable;
+
+  const booking = {
+    booking_date: formattedDate,
+    booking_status: BookingStatusEnum.PENDING,
+    tableId: tables[0]?.id,
+    userId: user?.id as string,
+    booking_time: formattedTime,
+    booking_name: user?.email as string,
+    booking_details: '',
+    pax,
+  } as Bookings;
 
   return {
     handleBooking,
@@ -180,8 +203,6 @@ export const useNewBooking = ({
     handleDateChange,
     handleSelectedPax,
     handleSelectedTableType,
-    // datesBooked,
-    // timeslotsBooked,
     timeSlots,
     selectedTime,
     setSelectedTime,
@@ -195,5 +216,8 @@ export const useNewBooking = ({
     noWindowsTablesAvailable,
     noHallTablesAvailable,
     noTablesAvailable,
+    openModal,
+    setIsOpenModal,
+    booking,
   };
 };

@@ -4,6 +4,7 @@ export const client = new MercadoPagoConfig({
   accessToken: process.env.NEXT_PUBLIC_MERPAGO_ACCESS_TOKEN!,
 });
 
+console.log({ client });
 export const BOOKING_ITEM = {
   id: '123456',
   title: 'Reserva en Las Nubes café',
