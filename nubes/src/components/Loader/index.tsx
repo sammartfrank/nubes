@@ -10,3 +10,11 @@ export const Loader = () => {
     </Fragment>
   );
 };
+
+export const Spinner = () => {
+return (
+  <div className="flex justify-center items-center h-full">
+    <div className="w-[50px] h-[50px] border-2 border-accent border-t-primary rounded-full animate-spin"></div>
+  </div>
+);
+}

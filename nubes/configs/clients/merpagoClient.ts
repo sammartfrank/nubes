@@ -1,13 +1,12 @@
 import MercadoPagoConfig from 'mercadopago';
 
 export const client = new MercadoPagoConfig({
-  accessToken: process.env.NEXT_PUBLIC_MERPAGO_ACCESS_TOKEN!,
+  accessToken: process.env.MERPAGO_ACCESS_TOKEN!,
 });
 
-console.log({ client });
 export const BOOKING_ITEM = {
   id: '123456',
   title: 'Reserva en Las Nubes café',
   quantity: 1,
-  unit_price: 4000,
+  unit_price: 1,
 };

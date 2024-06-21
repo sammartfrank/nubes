@@ -1,5 +1,8 @@
+import { BOOKING_ITEM, client } from '@/configs/clients/merpagoClient';
 import { NewBookingForm } from '@/src/components/Bookings/New/Form';
 import { createClient } from '@/utils/supabase/server';
+import { initMercadoPago } from '@mercadopago/sdk-react';
+import { Preference } from 'mercadopago';
 
 export default async function NewBookingPage() {
   const supabase = createClient();
@@ -12,9 +15,27 @@ export default async function NewBookingPage() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  const preference = new Preference(client);
+
+  const preferenceCreated = await preference.create({
+    body: {
+      items: [BOOKING_ITEM],
+      back_urls: {
+        success: process.env.NEXT_PUBLIC_PAYMENT_CALLBACK,
+        failure: process.env.NEXT_PUBLIC_PAYMENT_CALLBACK,
+        pending: process.env.NEXT_PUBLIC_PAYMENT_CALLBACK,
+      },
+      auto_return: 'approved',
+    },
+  });
+
   return (
     <div className="container mx-auto flex items-center justify-center mt-24">
-      <NewBookingForm user={user} access_token={session?.access_token!} />
+      <NewBookingForm
+        user={user}
+        access_token={session?.access_token!}
+        preferenceCreated={preferenceCreated.id!}
+      />
     </div>
   );
 }

@@ -12,17 +12,18 @@ import { Label } from '@/components/ui/label';
 import { Bookings } from '@/custom.types';
 
 export function BookingDetails({
-  booking,
+  bookingDetails,
   isOpen,
-  handleClose,
+  handleCloseDetails,
 }: {
-  booking?: Bookings;
+  bookingDetails?: Bookings;
   isOpen: boolean;
-  handleClose: () => void;
+  handleCloseDetails: () => void;
 }) {
-  if (!booking) return null;
+  if (!bookingDetails) return null;
+  
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isOpen} onOpenChange={handleCloseDetails}>
       <DialogContent className="sm:max-w-[640px]">
         <DialogHeader>
           <DialogTitle>Detalles</DialogTitle>
@@ -35,41 +36,43 @@ export function BookingDetails({
             <Label htmlFor="name" className="text-left">
               Nombre
             </Label>
-            <span className="text-gray-500">{booking.booking_name}</span>
+            <span className="text-gray-500">{bookingDetails.booking_name}</span>
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="bookingDate" className="text-left">
               Fecha de Reserva
             </Label>
-            <span className="text-gray-500">{booking.booking_date}</span>
+            <span className="text-gray-500">{bookingDetails.booking_date}</span>
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="bookingTime" className="text-left">
               Hora de Reserva
             </Label>
-            <span className="text-gray-500">{booking.booking_time}</span>
+            <span className="text-gray-500">{bookingDetails.booking_time}</span>
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="bookingStatus" className="text-left">
               Estado de la Reserva
             </Label>
-            <span className="text-gray-500">{booking.booking_status}</span>
+            <span className="text-gray-500">
+              {bookingDetails.booking_status}
+            </span>
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="createdDate" className="text-left">
               Fecha de Creación
             </Label>
-            <span className="text-gray-500">{booking.created_at}</span>
+            <span className="text-gray-500">{bookingDetails.created_at}</span>
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="bookingId" className="text-left">
               ID de Reserva
             </Label>
-            <span className="text-gray-500">{booking.id}</span>
+            <span className="text-gray-500">{bookingDetails.id}</span>
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleClose}>Cerrar</Button>
+          <Button onClick={handleCloseDetails}>Cerrar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

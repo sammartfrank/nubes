@@ -1,4 +1,9 @@
-import { Tables as Table, TablesInsert, Enums } from './database.types';
+import {
+  Tables as Table,
+  TablesInsert,
+  Enums,
+  TablesUpdate,
+} from './database.types';
 
 export type NavbarConfig = {
   admin: { href: string; text: string }[];
@@ -29,7 +34,24 @@ export enum BookingStatusEnum {
 
 export type Bookings = Table<'bookings'>;
 export type BookingsInsert = TablesInsert<'bookings'>;
+export type BookingsUpdate = TablesUpdate<'bookings'>;
 export type BookingStatus = Enums<'bookings_booking_status_enum'>;
+export type BookingsDelete = TablesUpdate<'bookings'>;
 
 export type Users = Table<'users'>;
 export type UsersInsert = TablesInsert<'users'>;
+
+export type Payment = Table<'payment'>;
+export type PaymentInsert = TablesInsert<'payment'>;
+export type PaymentMethod = Enums<'payment_payment_method_enum'>;
+export type PaymentStatus = Enums<'payment_payment_status_enum'>;
+
+export enum PaymentMethodEnum {
+  CARD = 'card',
+}
+
+export enum PaymentStatusEnum {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  CANCELLED = 'CANCELLED',
+}

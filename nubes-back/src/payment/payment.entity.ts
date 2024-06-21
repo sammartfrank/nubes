@@ -21,8 +21,32 @@ export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  collection_id: string;
+
+  @Column()
+  payment_mepa_id: string;
+
+  @Column()
+  merchant_order_id: string;
+
   @Column('decimal', { precision: 10, scale: 2 })
   amount: number;
+
+  @Column()
+  collection_status: string;
+
+  @Column()
+  status_detail: string;
+
+  @Column()
+  external_reference: string;
+
+  @Column()
+  payment_date: Date;
+
+  @Column()
+  external_status: string;
 
   @Column({
     type: 'enum',
@@ -51,9 +75,9 @@ export class Payment {
   )
   booking_confirmed: BookingsConfirmed;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updated_at: Date;
 }

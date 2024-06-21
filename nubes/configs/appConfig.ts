@@ -3,8 +3,6 @@ import { NavbarConfig } from '@/custom.types';
 import {
   ADMIN_PAGE_URL,
   BOOKINGS_URL,
-  DASHBOARD_URL,
-  HOME_URL,
   NEW_BOOKING_URL,
 } from '@/utils/constants';
 
@@ -37,4 +35,10 @@ export const dashboardConfig = {
 export const openingHoursConfig = {
   opening: 8,
   close: 24,
+};
+
+export const appTermsConfig = {
+  termsText: `Al realizar la reserva, aceptas los términos y condiciones de nuestro establecimiento. Además, al efectuar el pago, confirmas que estás de acuerdo con nuestra política de cancelación, la cual no incluye reembolsos.`,
+  termsUrl: '/terms',
+  policiesUrl: '/policies',
 };

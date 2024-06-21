@@ -8,7 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AvailabilityModule } from './availability/availability.module';
 import { BookingsConfirmedModule } from './bookings_confirmed/bookings_confirmed.module';
 import { TablesModule } from './tables/tables.module';
-import { PaymentsModule } from './payments/payments.module';
+import { PaymentsModule } from './payment/payments.module';
 
 import { AppService } from './app.service';
 import { BookingsConfirmedService } from './bookings_confirmed/bookings_confirmed.service';
@@ -16,7 +16,7 @@ import { BookingsService } from './bookings/bookings.service';
 import { AvailabilityService } from './availability/availability.service';
 
 import { AppController } from './app.controller';
-import { PaymentsController } from './payments/payments.controller';
+import { PaymentsController } from './payment/payments.controller';
 import { BookingsConfirmedController } from './bookings_confirmed/bookings_confirmed.controller';
 import { AvailabilityController } from './availability/availability.controller';
 
@@ -27,6 +27,7 @@ import {
   Payment,
   BookingsConfirmed,
 } from './entities';
+import { PaymentsService } from './payment/payments.service';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import {
     BookingsConfirmedService,
     BookingsService,
     AvailabilityService,
+    PaymentsService,
   ],
 })
 export class AppModule {}

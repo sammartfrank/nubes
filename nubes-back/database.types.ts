@@ -14,45 +14,39 @@ export type Database = {
           booking_date: string;
           booking_details: string;
           booking_name: string;
+          booking_status: Database['public']['Enums']['bookings_booking_status_enum'];
           booking_time: string;
           created_at: string;
           id: string;
           pax: number;
-          status: Database['public']['Enums']['bookings_status_enum'];
-          table_id: string;
           tableId: string | null;
           updated_at: string;
-          user_id: string;
           userId: string | null;
         };
         Insert: {
           booking_date: string;
           booking_details: string;
           booking_name: string;
+          booking_status?: Database['public']['Enums']['bookings_booking_status_enum'];
           booking_time: string;
           created_at?: string;
           id?: string;
           pax: number;
-          status?: Database['public']['Enums']['bookings_status_enum'];
-          table_id: string;
           tableId?: string | null;
           updated_at?: string;
-          user_id: string;
           userId?: string | null;
         };
         Update: {
           booking_date?: string;
           booking_details?: string;
           booking_name?: string;
+          booking_status?: Database['public']['Enums']['bookings_booking_status_enum'];
           booking_time?: string;
           created_at?: string;
           id?: string;
           pax?: number;
-          status?: Database['public']['Enums']['bookings_status_enum'];
-          table_id?: string;
           tableId?: string | null;
           updated_at?: string;
-          user_id?: string;
           userId?: string | null;
         };
         Relationships: [
@@ -72,13 +66,131 @@ export type Database = {
           },
         ];
       };
+      bookings_confirmed: {
+        Row: {
+          bookingId: string | null;
+          created_at: string;
+          id: string;
+          payment_amount: number;
+          paymentId: string | null;
+          updated_at: string;
+          userId: string | null;
+        };
+        Insert: {
+          bookingId?: string | null;
+          created_at?: string;
+          id?: string;
+          payment_amount: number;
+          paymentId?: string | null;
+          updated_at?: string;
+          userId?: string | null;
+        };
+        Update: {
+          bookingId?: string | null;
+          created_at?: string;
+          id?: string;
+          payment_amount?: number;
+          paymentId?: string | null;
+          updated_at?: string;
+          userId?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'FK_0796e8f46e635bef5f5b73a704f';
+            columns: ['paymentId'];
+            isOneToOne: true;
+            referencedRelation: 'payment';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'FK_6d88c69fb237e08564ca4d940f2';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'FK_8547427ab1f12be2f7576e67320';
+            columns: ['bookingId'];
+            isOneToOne: true;
+            referencedRelation: 'bookings';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      payment: {
+        Row: {
+          amount: number;
+          bookingId: string | null;
+          collection_id: string;
+          created_at: string;
+          external_reference: string;
+          external_status: string;
+          id: string;
+          merchant_order_id: string;
+          payment_mepa_id: string;
+          payment_method: Database['public']['Enums']['payment_payment_method_enum'];
+          payment_status: Database['public']['Enums']['payment_payment_status_enum'];
+          status_detail: string;
+          updated_at: string;
+          userId: string | null;
+        };
+        Insert: {
+          amount: number;
+          bookingId?: string | null;
+          collection_id: string;
+          created_at?: string;
+          external_reference: string;
+          external_status: string;
+          id?: string;
+          merchant_order_id: string;
+          payment_mepa_id: string;
+          payment_method?: Database['public']['Enums']['payment_payment_method_enum'];
+          payment_status?: Database['public']['Enums']['payment_payment_status_enum'];
+          status_detail: string;
+          updated_at?: string;
+          userId?: string | null;
+        };
+        Update: {
+          amount?: number;
+          bookingId?: string | null;
+          collection_id?: string;
+          created_at?: string;
+          external_reference?: string;
+          external_status?: string;
+          id?: string;
+          merchant_order_id?: string;
+          payment_mepa_id?: string;
+          payment_method?: Database['public']['Enums']['payment_payment_method_enum'];
+          payment_status?: Database['public']['Enums']['payment_payment_status_enum'];
+          status_detail?: string;
+          updated_at?: string;
+          userId?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'FK_5738278c92c15e1ec9d27e3a098';
+            columns: ['bookingId'];
+            isOneToOne: true;
+            referencedRelation: 'bookings';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'FK_b046318e0b341a7f72110b75857';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       tables: {
         Row: {
           created_at: string;
           id: string;
           table_capacity: number;
           table_number: number;
-          table_status: string;
+          table_status: Database['public']['Enums']['tables_table_status_enum'];
           table_type: Database['public']['Enums']['tables_table_type_enum'];
           updated_at: string;
         };
@@ -87,7 +199,7 @@ export type Database = {
           id?: string;
           table_capacity: number;
           table_number: number;
-          table_status: string;
+          table_status?: Database['public']['Enums']['tables_table_status_enum'];
           table_type?: Database['public']['Enums']['tables_table_type_enum'];
           updated_at?: string;
         };
@@ -96,7 +208,7 @@ export type Database = {
           id?: string;
           table_capacity?: number;
           table_number?: number;
-          table_status?: string;
+          table_status?: Database['public']['Enums']['tables_table_status_enum'];
           table_type?: Database['public']['Enums']['tables_table_type_enum'];
           updated_at?: string;
         };
@@ -104,20 +216,26 @@ export type Database = {
       };
       users: {
         Row: {
+          avatar_url: string;
           created_at: string;
           email: string;
+          full_name: string;
           id: string;
           updated_at: string;
         };
         Insert: {
+          avatar_url: string;
           created_at?: string;
           email: string;
+          full_name: string;
           id?: string;
           updated_at?: string;
         };
         Update: {
+          avatar_url?: string;
           created_at?: string;
           email?: string;
+          full_name?: string;
           id?: string;
           updated_at?: string;
         };
@@ -131,9 +249,10 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      booking_status_enum: 'pending' | 'approved' | 'cancelled';
-      bookings_status_enum: 'pending' | 'approved' | 'cancelled';
-      table_table_type_enum: 'Window' | 'Hall';
+      bookings_booking_status_enum: 'PENDING' | 'APPROVED' | 'CANCELLED';
+      payment_payment_method_enum: 'card' | 'merpago';
+      payment_payment_status_enum: 'PENDING' | 'APPROVED' | 'CANCELLED';
+      tables_table_status_enum: 'BOOKED' | 'AVAILABLE';
       tables_table_type_enum: 'Window' | 'Hall';
     };
     CompositeTypes: {

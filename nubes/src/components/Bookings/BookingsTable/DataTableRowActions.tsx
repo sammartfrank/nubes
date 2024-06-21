@@ -1,7 +1,6 @@
 'use client';
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { Row } from '@tanstack/react-table';
 
 import {
   DropdownMenu,
@@ -14,15 +13,17 @@ import {
 import { Button } from '@/components/ui/button';
 import { Bookings } from '@/custom.types';
 
-interface DataTableRowActionsProps<TData> {
+interface DataTableRowActionsProps {
   row: Bookings;
-  handleOnClick: (val: Bookings) => void;
+  handleOnViewDetails: (val: Bookings) => void;
+  handleCancelOnDropDown: (val: Bookings) => void;
 }
 
-export function DataTableRowActions<TData>({
+export function DataTableRowActions({
   row,
-  handleOnClick,
-}: DataTableRowActionsProps<TData>) {
+  handleOnViewDetails,
+  handleCancelOnDropDown,
+}: DataTableRowActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,13 +38,17 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => handleOnClick(row)}
+          onClick={() => handleOnViewDetails(row)}
         >
           Ver detalles
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Eliminar
+        <DropdownMenuItem
+          onClick={() => {
+            handleCancelOnDropDown(row);
+          }}
+        >
+          Cancelar
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

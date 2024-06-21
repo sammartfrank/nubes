@@ -27,7 +27,7 @@ export const statuses: Array<{
   },
   {
     value: BookingStatusEnum.APPROVED,
-    label: 'Aprovada',
+    label: 'Aprobada',
     icon: CheckCircledIcon,
     className: 'text-green-500 bg-green-100',
   },
@@ -47,13 +47,12 @@ export const BookingStatusCell = ({ row }: { row: Bookings }) => {
 
   return (
     <div
-      className={`flex items-center justify-center ${status.className} text-sm font-bold px-4 py-2 rounded-full w-40`}
+      className={`flex items-center justify-center ${status.className} text-sm font-bold p-2 rounded-lg w-40`}
     >
-      {status.icon && <status.icon className="mr-2 h-4 w-4" />}
-
       <HoverCard>
-        <HoverCardTrigger className="underline cursor-pointer">
-          {status.label}
+        <HoverCardTrigger className="flex flex-row gap-1 justify-center items-center cursor-pointer">
+          {status.icon && <status.icon className="h-6 w-6" />}
+          <span className="text-sm">{status.label}</span>
         </HoverCardTrigger>
         <HoverCardContent>
           Un email fue enviado a tu casilla para confirmar{' '}

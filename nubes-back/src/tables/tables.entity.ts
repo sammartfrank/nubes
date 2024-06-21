@@ -10,8 +10,8 @@ import {
 import { Bookings } from '../../src/bookings/bookings.entity';
 
 export enum TableType {
-  W = 'Window',
-  H = 'Hall',
+  Window = 'Window',
+  Hall = 'Hall',
 }
 
 enum TableStatus {
@@ -30,7 +30,7 @@ export class Tables {
   @Column({
     type: 'enum',
     enum: TableType,
-    default: TableType.W,
+    default: TableType.Window,
   })
   table_type: TableType;
 

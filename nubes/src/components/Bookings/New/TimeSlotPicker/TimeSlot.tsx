@@ -21,6 +21,11 @@ export const TimeSlot = ({
       'text-primary font-bold border border-border rounded-lg bg-zinc-100';
   }
 
+  const time = slotTime.toLocaleTimeString('es-AR', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
     <div
       onClick={() => handleClick(slotTime)}
@@ -31,10 +36,7 @@ export const TimeSlot = ({
         className
       }
     >
-      {slotTime.toLocaleTimeString('es-ES', {
-        hour: '2-digit',
-        minute: '2-digit',
-      })}
+      {time}
     </div>
   );
 };

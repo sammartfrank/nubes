@@ -8,6 +8,11 @@ export default async function BookingsPage() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return <UsersBookingsSection access_token={session?.access_token} />;
+  return (
+    <UsersBookingsSection access_token={session?.access_token!} user={user!} />
+  );
 }

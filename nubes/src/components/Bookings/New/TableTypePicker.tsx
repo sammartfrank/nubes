@@ -51,7 +51,7 @@ export const TableTypePicker = ({
               : className
           }
         >
-          Pasillo
+          Salón
         </div>
       )}
     </div>

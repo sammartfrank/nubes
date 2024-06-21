@@ -1,7 +1,7 @@
+import { CreateBookingDto } from './../../../../../nubes-back/src/bookings/dto/create-bookings.dto';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { bookingsRequest } from '../../utils/request';
 import { Session } from '@supabase/supabase-js';
-import { BookingsInsert } from '@/custom.types';
 
 export const useCreateBookingMutation = ({
   access_token,
@@ -10,8 +10,8 @@ export const useCreateBookingMutation = ({
 }) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ variables }: { variables: BookingsInsert }) =>
-      bookingsRequest<BookingsInsert>('POST', '/bookings', {
+    mutationFn: async ({ variables }: { variables: CreateBookingDto }) =>
+      bookingsRequest<CreateBookingDto>('POST', '/bookings', {
         body: { ...variables },
         access_token,
       }),

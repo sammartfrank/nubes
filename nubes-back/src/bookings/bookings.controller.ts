@@ -2,16 +2,18 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
+  Get,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { JWTAuthGuard as SupabaseAuthGuard } from 'nest-supabase-guard';
 
 import { BookingsService } from './bookings.service';
-import { BookingInsert, BookingUpdate } from '../../custom.database.types';
+import { BookingUpdate } from '../../custom.database.types';
+import { CreateBookingDto } from './dto/create-bookings.dto';
 
 @Controller('bookings')
 export class BookingsController {
@@ -19,13 +21,27 @@ export class BookingsController {
 
   @UseGuards(SupabaseAuthGuard)
   @Get()
-  async getAllBookings() {
-    return this.bookingsService.getAllBookings();
+  async getAllBookings(
+    @Query('userId') userId?: string,
+    @Query('booking_status') bookingStatus?: string,
+  ) {
+    if (userId && bookingStatus) {
+      return this.bookingsService.getBookingsByUserAndStatus({
+        userId,
+        bookingStatus,
+      });
+    } else {
+      console.log({ allBookings: true });
+      return this.bookingsService.getAllBookings();
+    }
   }
-
   @UseGuards(SupabaseAuthGuard)
   @Post()
-  async createBooking(@Body() createBookingDto: BookingInsert) {
+  async createBooking(@Body() createBookingDto: CreateBookingDto) {
+    console.log(
+      '🚀 ~ BookingsController ~ createBooking ~ createBookingDto:',
+      createBookingDto,
+    );
     return this.bookingsService.createBooking(createBookingDto);
   }
   @UseGuards(SupabaseAuthGuard)

@@ -10,13 +10,16 @@ import React, {
 } from 'react';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { ConfirmationModal } from './types';
+import { Button } from '@/components/ui/button';
 
 interface ConfirmationContextProps {
   showConfirmation: (props: ConfirmationModal) => void;
@@ -67,13 +70,12 @@ export const ConfirmationProvider = ({ children }: { children: ReactNode }) => {
       [],
     ),
   };
-
   return (
     <ConfirmationContext.Provider value={contextValue}>
       {children}
       {true && (
-        <form >
-          <Dialog>
+        <form onSubmit={submit}>
+          <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogTrigger>{action}</DialogTrigger>
             <DialogContent>
               <DialogHeader>

@@ -1,17 +1,40 @@
 import { Injectable } from '@nestjs/common';
 
-import { sendEmail, supabase } from '../cli/index';
-import { Booking, BookingInsert } from '../../custom.database.types';
+import { supabase } from '../cli/index';
+import {
+  Booking,
+  BookingStatusEnum,
+  BookingUpdate,
+} from '../../custom.database.types';
+import { CreateBookingDto } from './dto/create-bookings.dto';
 
 @Injectable()
 export class BookingsService {
   constructor() {}
 
   async getAllBookings() {
+    const { data, error } = await supabase.from('bookings').select('*');
+    if (error) {
+      throw error;
+    }
+    return data as Booking[];
+  }
+
+  async getBookingsByUserAndStatus({
+    userId = '',
+    bookingStatus = BookingStatusEnum.PENDING,
+  }: {
+    userId: string;
+    bookingStatus: string;
+  }) {
     const { data, error } = await supabase
       .from('bookings')
       .select('*')
-      .order('booking_date', { ascending: false });
+      .eq('userId', userId)
+      .eq('booking_status', bookingStatus)
+      .order('created_at', { ascending: false });
+
+    console.log({ data, error });
 
     if (error) {
       throw error;
@@ -19,50 +42,42 @@ export class BookingsService {
     return data as Booking[];
   }
 
-  async createBooking(createBookingDto: BookingInsert) {
+  async createBooking(createBookingDto: CreateBookingDto) {
     try {
-      const bookingResult = await supabase
+      const { data, error } = await supabase
         .from('bookings')
         .insert([{ ...createBookingDto }]);
+      console.log(
+        '🚀 ~ BookingsService ~ createBooking ~ data, error :',
+        data,
+        error,
+      );
 
-      if (bookingResult.error) {
-        console.log('Booking Error:', bookingResult.error);
-        throw new Error(
-          `Failed to create booking: ${bookingResult.error.message}`,
-        );
+      if (error) {
+        console.log('Booking Error:', error);
+        throw new Error(`Failed to create booking: ${error.message}`);
       }
 
-      const result = await sendEmail({
-        subject: 'Booking Confirmation',
-        config: {
-          booking_name: createBookingDto.booking_name,
-          booking_date: createBookingDto.booking_date,
-          booking_time: createBookingDto.booking_time,
-        },
-      });
-
-      console.log({ result });
-
-      return {
-        bookingResult,
-        message: 'Booking created successfully',
-      };
+      return data;
     } catch (error) {
       console.log('Error:', error);
       throw error;
     }
   }
 
-  async updateBooking(bookingId: string, updateBookingDto: any) {
+  async updateBooking(bookingId: string, updateBookingDto: BookingUpdate) {
+    console.log(
+      '🚀 ~ BookingsService ~ updateBooking ~ updateBookingDto:',
+      updateBookingDto,
+    );
+    console.log('🚀 ~ BookingsService ~ updateBooking ~ bookingId:', bookingId);
     const { data, error } = await supabase
       .from('bookings')
       .update(updateBookingDto)
       .eq('id', bookingId);
-
     if (error) {
       throw error;
     }
-
     return data;
   }
 
@@ -74,8 +89,6 @@ export class BookingsService {
     if (error) {
       throw error;
     }
-    console.log('🚀 ~ BookingsService ~ deleteBooking ~ data:', data);
-
     return data;
   }
 }

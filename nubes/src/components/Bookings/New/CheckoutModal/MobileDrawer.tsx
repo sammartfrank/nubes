@@ -9,16 +9,27 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import { CheckoutModalProps } from '.';
 import { BookingDetail } from './BookingDetail';
+import { Bookings } from '@/custom.types';
+import { CreateBookingDto } from '../../../../../../nubes-back/src/bookings/dto/create-bookings.dto';
+
+type DrawerDialog = {
+  open: boolean;
+  setOpen: (val: boolean) => void;
+  terms: string;
+  booking: Bookings;
+  preferenceCreated: string;
+  handleCreateBooking: () => Promise<CreateBookingDto>;
+};
 
 export const MobileDrawer = ({
   open,
   setOpen,
   terms,
-  handleSubmit,
   booking,
-}: CheckoutModalProps) => {
+  preferenceCreated,
+  handleCreateBooking,
+}: DrawerDialog) => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerContent>
@@ -27,11 +38,15 @@ export const MobileDrawer = ({
           <DrawerDescription>{terms}</DrawerDescription>
         </DrawerHeader>
         <div className="p-4">
-          <BookingDetail booking={booking} handleSubmit={handleSubmit} />
+          <BookingDetail
+            booking={booking}
+            preferenceId={preferenceCreated}
+            handleCreateBooking={handleCreateBooking}
+          />
         </div>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">Cancelar</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

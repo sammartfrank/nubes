@@ -122,30 +122,51 @@ export type Database = {
         Row: {
           amount: number
           bookingId: string | null
+          collection_id: string
+          collection_status: string
           created_at: string
+          external_reference: string
+          external_status: string
           id: string
+          merchant_order_id: string
+          payment_mepa_id: string
           payment_method: Database["public"]["Enums"]["payment_payment_method_enum"]
           payment_status: Database["public"]["Enums"]["payment_payment_status_enum"]
+          status_detail: string
           updated_at: string
           userId: string | null
         }
         Insert: {
           amount: number
           bookingId?: string | null
+          collection_id: string
+          collection_status: string
           created_at?: string
+          external_reference: string
+          external_status: string
           id?: string
+          merchant_order_id: string
+          payment_mepa_id: string
           payment_method?: Database["public"]["Enums"]["payment_payment_method_enum"]
           payment_status?: Database["public"]["Enums"]["payment_payment_status_enum"]
+          status_detail: string
           updated_at?: string
           userId?: string | null
         }
         Update: {
           amount?: number
           bookingId?: string | null
+          collection_id?: string
+          collection_status?: string
           created_at?: string
+          external_reference?: string
+          external_status?: string
           id?: string
+          merchant_order_id?: string
+          payment_mepa_id?: string
           payment_method?: Database["public"]["Enums"]["payment_payment_method_enum"]
           payment_status?: Database["public"]["Enums"]["payment_payment_status_enum"]
+          status_detail?: string
           updated_at?: string
           userId?: string | null
         }
@@ -198,20 +219,26 @@ export type Database = {
       }
       users: {
         Row: {
+          avatar_url: string
           created_at: string
           email: string
+          full_name: string
           id: string
           updated_at: string
         }
         Insert: {
+          avatar_url: string
           created_at?: string
           email: string
+          full_name: string
           id?: string
           updated_at?: string
         }
         Update: {
+          avatar_url?: string
           created_at?: string
           email?: string
+          full_name?: string
           id?: string
           updated_at?: string
         }
@@ -226,8 +253,8 @@ export type Database = {
     }
     Enums: {
       bookings_booking_status_enum: "PENDING" | "APPROVED" | "CANCELLED"
-      payment_payment_method_enum: "card"
-      payment_payment_status_enum: "pending" | "succeeded" | "cancelled"
+      payment_payment_method_enum: "card" | "merpago"
+      payment_payment_status_enum: "PENDING" | "APPROVED" | "CANCELLED"
       tables_table_status_enum: "BOOKED" | "AVAILABLE"
       tables_table_type_enum: "Window" | "Hall"
     }

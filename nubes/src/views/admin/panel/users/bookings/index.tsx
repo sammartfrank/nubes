@@ -1,41 +1,71 @@
 'use client';
+import { Session, User } from '@supabase/supabase-js';
 
-import { BookingsTable } from '@/src/components/Bookings/BookingsTable';
-import { useBookingsQuery } from '@/src/hooks';
-import { Session } from '@supabase/supabase-js';
-import { NEW_BOOKING_URL } from '@/utils/constants';
-import Link from 'next/link';
+import { BookingsTableView } from '@/src/components/Bookings/BookingsTable';
 import { Loader } from '@/src/components/Loader';
+import { useBookingsSection } from '@/src/hooks/useBookingsSection';
+import { NoBookings } from '@/src/components/Bookings/BookingsSection/NoBookings';
+import { useMediaQuery } from '@/src/hooks';
+import { MobileBookingsView } from '@/src/components/Bookings/BookingsSection/MobileBookingsView';
 
 export const UsersBookingsSection = ({
   access_token,
+  user,
 }: {
-  access_token?: Session['access_token'];
+  access_token: Session['access_token'];
+  user: User;
 }) => {
-  const { data: bookings = [], isLoading } = useBookingsQuery(access_token);
+  const {
+    bookings,
+    isLoadingBookings,
+    handleCancelBooking,
+    isCancelOpen,
+    setIsCancelOpen,
+    isCancelling,
+    bookingDetails,
+    handleCancelOnDropDown,
+    handleCloseDetails,
+    handleOnViewDetails,
+    detailModalIsOpen,
+  } = useBookingsSection({
+    access_token,
+    user,
+  });
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  if (isLoading) return <Loader />;
+  if (isLoadingBookings) return <Loader />;
+  if (bookings.length === 0) return <NoBookings />;
 
-  if (bookings.length === 0) {
+  if (!isDesktop)
     return (
-      <div className="flex flex-col gap-5 justify-center items-center h-screen">
-        <span>No hay reservas realizadas.</span>
-        <Link
-          href={NEW_BOOKING_URL}
-          className="p-2 border border-border shadow-sm rounded-lg hover:bg-primary hover:text-primary-foreground hover:border-transparent"
-        >
-          Crear Reserva
-        </Link>
-      </div>
+      <MobileBookingsView
+        bookings={bookings}
+        bookingDetails={bookingDetails}
+        detailModalIsOpen={detailModalIsOpen}
+        isCancelOpen={isCancelOpen}
+        setIsCancelOpen={setIsCancelOpen}
+        handleCancelBooking={handleCancelBooking}
+        handleCancelOnDropDown={handleCancelOnDropDown}
+        handleCloseDetails={handleCloseDetails}
+        handleOnViewDetails={handleOnViewDetails}
+        isCancelling={isCancelling}
+      />
     );
-  }
+
   return (
     <section>
-      <main>
-        <>
-          <BookingsTable bookings={bookings} />
-        </>
-      </main>
+      <BookingsTableView
+        bookings={bookings}
+        bookingDetails={bookingDetails}
+        detailModalIsOpen={detailModalIsOpen}
+        isCancelOpen={isCancelOpen}
+        setIsCancelOpen={setIsCancelOpen}
+        handleCancelBooking={handleCancelBooking}
+        handleCancelOnDropDown={handleCancelOnDropDown}
+        handleCloseDetails={handleCloseDetails}
+        handleOnViewDetails={handleOnViewDetails}
+        isCancelling={isCancelling}
+      />
     </section>
   );
 };

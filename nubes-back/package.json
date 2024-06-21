@@ -14,7 +14,7 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "create-types": "supabase gen types typescript --project-id ${SUPABASE_PROJECT_ID} > database.types.ts"
+    "create-types": "supabase gen types typescript --project-id hzhzygtsfqxksectlxme > database.types.ts"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.2.2",

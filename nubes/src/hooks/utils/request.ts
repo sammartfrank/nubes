@@ -2,7 +2,7 @@ import { BACKEND_API_URL } from '@/utils/constants';
 
 type METHOD = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-type Service = 'bookings' | 'users' | 'availability' | 'tables';
+type Service = 'bookings' | 'users' | 'availability' | 'tables' | 'payments';
 
 interface RequestOptions {
   body?: object;
@@ -89,3 +89,4 @@ export const bookingsRequest = createRequester('bookings');
 export const usersRequest = createRequester('users');
 export const availabilityRequest = createRequester('availability');
 export const tablesRequest = createRequester('tables');
+export const paymentRequest = createRequester('payments');

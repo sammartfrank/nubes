@@ -10,11 +10,19 @@ export const DASHBOARD_URL = '/dashboard';
 
 export const NEW_BOOKING_URL = `/dashboard/bookings/new`;
 export const BOOKINGS_URL = `/dashboard/bookings`;
+export const NEW_PAYMENT_SUCCESS = `/dashboard/bookings?status=success`;
 
 export const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const BOOKINGS_API_URL = `${BACKEND_API_URL}/bookings`;
 export const USERS_API_URL = `${BACKEND_API_URL}/users`;
+export const PAYMENTS_API_URL = `${BACKEND_API_URL}/payments`;
+
+
+//errors
+export const PAYMENTS_ERROR_URL = `/dashboard/payments/error`;
+export const BOOKINGS_ERROR_URL = `/dashboard/bookings/error`;
+export const BOOKING_UPDATE_STATUS_ERROR_URL = `/dashboard/bookings/status/error`;
 
 // Admin Routes
 export const ADMIN_PANEL_URL = '/admin/panel';

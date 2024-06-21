@@ -1,8 +1,36 @@
 'use client';
 
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import { useEffect } from 'react';
+import { CreateBookingDto } from '../../../../nubes-back/src/bookings/dto/create-bookings.dto';
 
-export const Checkout = ({ preferenceId }: { preferenceId: string }) => {
-  initMercadoPago(process.env.NEXT_PUBLIC_MERPAGO_PUBLIC_KEY!);
-  return <Wallet initialization={{ preferenceId }} locale="es-AR" />;
+initMercadoPago(process.env.NEXT_PUBLIC_MERPAGO_PUBLIC_KEY!);
+
+export const Checkout = ({
+  preferenceId,
+  handleCreateBooking,
+}: {
+  preferenceId: string;
+  handleCreateBooking: () => Promise<CreateBookingDto>;
+}) => {
+  useEffect(() => {
+    return () => {};
+  }, []);
+
+  const initialization = {
+    preferenceId: preferenceId,
+  };
+
+  const onSubmit = async () => {
+    await handleCreateBooking();
+  };
+
+  return (
+    // @ts-ignore
+    <Wallet
+      initialization={initialization}
+      onSubmit={onSubmit}
+      locale="es-AR"
+    />
+  );
 };

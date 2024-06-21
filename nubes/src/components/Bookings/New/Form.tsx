@@ -7,15 +7,17 @@ import { PaxPicker } from './PaxPicker';
 import { useNewBooking } from '@/src/hooks/useNewBooking/useNewBooking';
 import { ToastContainer } from 'react-toastify';
 import { User } from '@supabase/supabase-js';
-import { CheckoutModal } from './CheckoutModal';
-import { Bookings } from '@/custom.types';
+
+import { CheckoutDesktopModal } from './CheckoutModal';
 
 export const NewBookingForm = ({
   user,
   access_token,
+  preferenceCreated,
 }: {
   user: User | null;
   access_token: string;
+  preferenceCreated: string;
 }) => {
   const {
     selectedDate,
@@ -24,7 +26,6 @@ export const NewBookingForm = ({
     handleTimeSelection,
     pax,
     handleSelectedPax,
-    handleBooking,
     timeSlots,
     error,
     selectedTableType,
@@ -33,9 +34,10 @@ export const NewBookingForm = ({
     noWindowsTablesAvailable,
     noHallTablesAvailable,
     noTablesAvailable,
-    openModal,
-    setIsOpenModal,
     booking,
+    checkoutOpenModal,
+    setCheckoutModalOpen,
+    handleCreateBooking
   } = useNewBooking({ user, access_token });
   return (
     <form className="flex flex-col gap-5 text-center">
@@ -74,20 +76,21 @@ export const NewBookingForm = ({
           <button
             type="button"
             className="p-3 bg-primary text-white rounded-md hover:bg-primary-foreground hover:text-primary hover:border-border hover:border w-[235px] mx-auto disabled:bg-zinc-500 disabled:cursor-not-allowed disabled:text-white disabled:hover:bg-zinc-500 disabled:hover:text-white disabled:hover:border-border disabled:hover:border"
-            onClick={() => setIsOpenModal(true)}
+            onClick={() => setCheckoutModalOpen(true)}
             disabled={!selectedTime || !selectedDate || !pax}
           >
-            Hace tu Reserva
+            Reservar
           </button>
         )}
         {error && <p className="text-red-500 mt-5">{error}</p>}
       </>
 
-      <CheckoutModal
-        handleSubmit={handleBooking}
-        open={openModal}
-        setOpen={setIsOpenModal}
+      <CheckoutDesktopModal
+        preferenceCreated={preferenceCreated}
+        open={checkoutOpenModal}
+        setOpen={setCheckoutModalOpen}
         booking={booking}
+        handleCreateBooking={handleCreateBooking}
       />
 
       <ToastContainer className="text-left" />

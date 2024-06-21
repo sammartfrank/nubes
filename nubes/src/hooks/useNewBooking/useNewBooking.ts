@@ -4,15 +4,17 @@ import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { generateTimeSlots } from '@/src/components/Bookings/utils';
 import { openingHoursConfig } from '@/configs/appConfig';
+
 import { useAvailabilityByDate } from '../useAvailability/queries/useAvailabilityByDate';
-import { useCreateBookingMutation } from '../useBookings';
+import { useBookingsQuery, useCreateBookingMutation } from '../useBookings';
+import { useTablesQuery } from '../useTables';
 
 import { Bookings, BookingStatusEnum, TableTypeEnum } from '@/custom.types';
-import { useTablesQuery } from '../useTables';
-import { BOOKINGS_URL } from '@/utils/constants';
-import { useRouter } from 'next/navigation';
+import { generateTimeSlots } from '@/src/components/Bookings/utils';
+
+import { TableType } from '../../../../nubes-back/src/tables/tables.entity';
+import { CreateBookingDto } from '../../../../nubes-back/src/bookings/dto/create-bookings.dto';
 
 export const useNewBooking = ({
   user,
@@ -21,128 +23,83 @@ export const useNewBooking = ({
   user: any;
   access_token: string;
 }) => {
-  const router = useRouter();
-
   const createBookingMutation = useCreateBookingMutation({
     access_token,
   });
 
-  const timeSlots = useMemo(
-    () =>
-      generateTimeSlots({
-        openingHour: openingHoursConfig.opening,
-        closingHour: openingHoursConfig.close,
-      }),
-    [],
-  );
-
   const [error, setError] = useState('');
-
-  const [openModal, setIsOpenModal] = useState(false);
-
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState<Date>(selectedDate);
+
+  const dateUTC = selectedDate.toISOString().split('T')[0];
+  const timeUTC =
+    selectedTime?.getHours().toString().padStart(2, '0') +
+    ':' +
+    selectedTime?.getMinutes().toString().padStart(2, '0') +
+    ':' +
+    selectedTime?.getSeconds().toString().padStart(2, '0');
+
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
   };
-  const [selectedTime, setSelectedTime] = useState<Date | undefined>();
 
   const handleTimeSelection = (date: Date) => {
     if (selectedTime === date) return;
     setSelectedTime(date);
   };
 
-  const date = selectedDate.toISOString().split('T')[0];
   const { availability = [], isLoading: isLoadingAvailability } =
     useAvailabilityByDate({
-      selectedDate: date,
+      selectedDate: dateUTC,
       access_token,
     });
 
-  // We need to make an object with the dates that have bookings. Or
-  // const datesBooked = useMemo(() => {
-  //   const uniqueDates = Array.from(
-  //     new Set(availability.map((date) => new Date(date.booking_date))),
-  //   );
-  //   return uniqueDates;
-  // }, [availability]);
-
-  // we need to get the times booked on the date selected if there are any
-  // const timeslotsBooked = useMemo(
-  //   () =>
-  //     availability?.reduce((acc, curr) => {
-  //       // we need to each booking_date: [booking_time]
-  //       const bookingTime = curr?.booking_time;
-  //       const bookingDate = curr?.booking_date;
-
-  //       if (!acc[bookingDate]) {
-  //         acc[bookingDate] = new Set();
-  //       }
-
-  //       acc[bookingDate].add(bookingTime);
-
-  //       return acc;
-  //     }, {} as Record<string, Set<string>>),
-  //   [availability],
-  // );
-
+  const timeSlots = useMemo(
+    () =>
+      generateTimeSlots({
+        date: selectedDate,
+        openingHour: openingHoursConfig.opening,
+        closingHour: openingHoursConfig.close,
+      }),
+    [selectedDate],
+  );
   const { data: tables = [], isLoading: isLoadingTables } = useTablesQuery({
     access_token,
   });
 
+  const { data: bookings = [], isLoading: isLoadingBookings } =
+    useBookingsQuery({
+      access_token,
+    });
+
   const [selectedTableType, setSelectedTableType] =
     useState<TableTypeEnum | null>(null);
+
   const handleSelectedTableType = (tableType: TableTypeEnum) => {
     setSelectedTableType(tableType);
+    setPax(1);
   };
 
   const [pax, setPax] = useState(1);
-  const handleSelectedPax = (pax: number) => {
+
+  const handleSelectedPax = useCallback((pax: number) => {
     setPax(pax);
-  };
+  }, []);
 
-  // const availableTables = tables.filter(
-  //   (table) => table.table_status === TableStatus.AVAILABLE,
-  // );
-
-  // const availableTablesByType = availableTables.filter(
-  //   (table) => table.table_type === selectedTableType.toString(),
-  // );
-
-  // we make sure to provide the highest amount of pax available for the selected table type.
-  // const sortedTablesByCapacity = availableTablesByType.sort(
-  //   (a, b) => b.table_capacity - a.table_capacity,
-  // );
-  // const tableCapacity = sortedTablesByCapacity[0]?.table_capacity as number;
-
-  // const totalTimeSlots = timeSlots.length;
-
-  // const noWindowsTablesAvailable =
-  //   availableTables.filter(
-  //     (table) => table.table_type === TableType.W.toString(),
-  //   ).length === 0;
-
-  // const noHallTablesAvailable =
-  //   availableTables.filter(
-  //     (table) => table.table_type === TableType.H.toString(),
-  //   ).length === 0;
-
-  const formattedDate = selectedDate.toISOString().split('T')[0];
-  const formattedTime = selectedTime
-    ?.toISOString()
-    .split('T')[1]
-    .substring(0, 8) as string;
-
-  const handleBooking = useCallback(async () => {
+  const handleCreateBooking = useCallback(() => {
     const booking = {
-      booking_date: formattedDate,
+      booking_date: dateUTC,
       booking_status: BookingStatusEnum.PENDING,
       tableId: tables[0]?.id,
       userId: user?.id as string,
-      booking_time: formattedTime,
+      booking_time: timeUTC,
       booking_name: user?.email as string,
       booking_details: '',
+      table_type: 'Window' as TableType,
       pax,
     };
+
+    console.log({ booking });
 
     if (!selectedDate || !selectedTime || !pax) {
       setError('Por favor, complete todos los campos antes de enviar.');
@@ -158,27 +115,28 @@ export const useNewBooking = ({
       },
       {
         onSuccess: () => {
-          toast.success('Reserva creada con éxito');
-          router.push(BOOKINGS_URL);
+          toast.success('Reserva inicializada con éxito');
+          return Promise.resolve();
         },
         onError: (error) => {
           console.error({ error });
+          setError(error.message);
           toast.error('Error al crear la reserva');
+          return Promise.reject();
         },
       },
     );
   }, [
     createBookingMutation,
-    formattedDate,
-    formattedTime,
     pax,
     selectedDate,
+    tables,
     selectedTime,
     setError,
-    tables,
-    router,
+    dateUTC,
+    timeUTC,
     user,
-  ]);
+  ]) as () => Promise<CreateBookingDto>;
 
   const noWindowsTablesAvailable = false;
   const noHallTablesAvailable = false;
@@ -187,28 +145,35 @@ export const useNewBooking = ({
     noWindowsTablesAvailable && noWindowsTablesAvailable;
 
   const booking = {
-    booking_date: formattedDate,
+    booking_date: dateUTC,
     booking_status: BookingStatusEnum.PENDING,
     tableId: tables[0]?.id,
     userId: user?.id as string,
-    booking_time: formattedTime,
+    booking_time: timeUTC,
     booking_name: user?.email as string,
     booking_details: '',
     pax,
   } as Bookings;
 
+  const [openDesktop, setOpenDesktop] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const [checkoutOpenModal, setCheckoutModalOpen] = useState(false);
+
   return {
-    handleBooking,
+    handleCreateBooking,
     handleTimeSelection,
     handleDateChange,
     handleSelectedPax,
     handleSelectedTableType,
+    bookings,
+    booking,
     timeSlots,
     selectedTime,
     setSelectedTime,
     selectedTableType,
     pax,
-    tableCapacity: 4,
+    tableCapacity: TableTypeEnum.W === selectedTableType ? 4 : 12,
     error,
     availability,
     isLoadingAvailability,
@@ -216,8 +181,14 @@ export const useNewBooking = ({
     noWindowsTablesAvailable,
     noHallTablesAvailable,
     noTablesAvailable,
+    openDesktop,
+    setOpenDesktop,
+
     openModal,
-    setIsOpenModal,
-    booking,
+    setOpenModal,
+    checkoutOpenModal,
+    setCheckoutModalOpen,
+
+    // handleDeleteBooking,
   };
 };

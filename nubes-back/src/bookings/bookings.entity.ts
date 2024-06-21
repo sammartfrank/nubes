@@ -8,7 +8,11 @@ import {
   OneToOne,
 } from 'typeorm';
 
-import { BookingStatus, BookingStatusEnum } from '../../custom.database.types';
+import {
+  BookingStatus,
+  BookingStatusEnum,
+  TableTypeEnum,
+} from '../../custom.database.types';
 
 import { BookingsConfirmed, Payment, Tables, Users } from '../entities';
 
@@ -20,7 +24,7 @@ export class Bookings {
   @Column({ type: 'date' })
   booking_date: Date;
 
-  @Column({ type: 'time without time zone' })
+  @Column('text')
   booking_time: string;
 
   @Column('text')
@@ -53,6 +57,13 @@ export class Bookings {
     (booking_confirmed) => booking_confirmed.booking,
   )
   booking_confirmed: BookingsConfirmed;
+
+  @Column({
+    type: 'enum',
+    enum: TableTypeEnum,
+    default: TableTypeEnum.WINDOW,
+  })
+  table_type: TableTypeEnum.WINDOW;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;
