@@ -1,7 +1,6 @@
 import { BOOKING_ITEM, client } from '@/configs/clients/merpagoClient';
 import { NewBookingForm } from '@/src/components/Bookings/New/Form';
 import { createClient } from '@/utils/supabase/server';
-import { initMercadoPago } from '@mercadopago/sdk-react';
 import { Preference } from 'mercadopago';
 
 export default async function NewBookingPage() {

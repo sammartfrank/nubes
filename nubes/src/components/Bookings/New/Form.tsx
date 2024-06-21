@@ -36,8 +36,9 @@ export const NewBookingForm = ({
     noTablesAvailable,
     booking,
     checkoutOpenModal,
+    handleCheckoutModalOpen,
+    handleCreateBooking,
     setCheckoutModalOpen,
-    handleCreateBooking
   } = useNewBooking({ user, access_token });
   return (
     <form className="flex flex-col gap-5 text-center">
@@ -76,7 +77,7 @@ export const NewBookingForm = ({
           <button
             type="button"
             className="p-3 bg-primary text-white rounded-md hover:bg-primary-foreground hover:text-primary hover:border-border hover:border w-[235px] mx-auto disabled:bg-zinc-500 disabled:cursor-not-allowed disabled:text-white disabled:hover:bg-zinc-500 disabled:hover:text-white disabled:hover:border-border disabled:hover:border"
-            onClick={() => setCheckoutModalOpen(true)}
+            onClick={handleCheckoutModalOpen}
             disabled={!selectedTime || !selectedDate || !pax}
           >
             Reservar

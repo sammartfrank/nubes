@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { openingHoursConfig } from '@/configs/appConfig';
 
-import { useAvailabilityByDate } from '../useAvailability/queries/useAvailabilityByDate';
 import { useBookingsQuery, useCreateBookingMutation } from '../useBookings';
 import { useTablesQuery } from '../useTables';
 
@@ -17,7 +16,6 @@ import {
   TableTypeEnum,
 } from '@/custom.types';
 import { generateTimeSlots } from '@/src/components/Bookings/utils';
-
 
 export const useNewBooking = ({
   user,
@@ -33,6 +31,13 @@ export const useNewBooking = ({
   const [error, setError] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState<Date>(selectedDate);
+  const [openModal, setOpenModal] = useState(false);
+  const [checkoutOpenModal, setCheckoutModalOpen] = useState(false);
+
+  const handleCheckoutModalOpen = useCallback(
+    () => setCheckoutModalOpen(true),
+    [],
+  );
 
   const dateUTC = selectedDate.toISOString().split('T')[0];
   const timeUTC =
@@ -42,20 +47,17 @@ export const useNewBooking = ({
     ':' +
     selectedTime?.getSeconds().toString().padStart(2, '0');
 
-  const handleDateChange = (date: Date) => {
+  const handleDateChange = useCallback((date: Date) => {
     setSelectedDate(date);
-  };
+  }, []);
 
-  const handleTimeSelection = (date: Date) => {
-    if (selectedTime === date) return;
-    setSelectedTime(date);
-  };
-
-  const { availability = [], isLoading: isLoadingAvailability } =
-    useAvailabilityByDate({
-      selectedDate: dateUTC,
-      access_token,
-    });
+  const handleTimeSelection = useCallback(
+    (date: Date) => {
+      if (selectedTime === date) return;
+      setSelectedTime(date);
+    },
+    [selectedTime],
+  );
 
   const timeSlots = useMemo(
     () =>
@@ -78,10 +80,10 @@ export const useNewBooking = ({
   const [selectedTableType, setSelectedTableType] =
     useState<TableTypeEnum | null>(null);
 
-  const handleSelectedTableType = (tableType: TableTypeEnum) => {
+  const handleSelectedTableType = useCallback((tableType: TableTypeEnum) => {
     setSelectedTableType(tableType);
     setPax(1);
-  };
+  }, []);
 
   const [pax, setPax] = useState(1);
 
@@ -93,21 +95,15 @@ export const useNewBooking = ({
     const booking = {
       booking_date: dateUTC,
       booking_status: BookingStatusEnum.PENDING,
-
-      // Harcoded
+      // TODO: add logic and remove Harcoded ID.
       tableId: tables[0]?.id,
-
       userId: user?.id as string,
       booking_time: timeUTC,
       booking_name: user?.email as string,
       booking_details: '' as string,
-
-      // Hardcoded
-      table_type: 'Window' as TableTypeEnum,
+      table_type: selectedTableType as TableTypeEnum,
       pax,
     } as CreateBookingDto;
-
-    console.log({ booking });
 
     if (!selectedDate || !selectedTime || !pax) {
       setError('Por favor, complete todos los campos antes de enviar.');
@@ -143,30 +139,29 @@ export const useNewBooking = ({
     setError,
     dateUTC,
     timeUTC,
+    selectedTableType,
     user,
-  ]) as () => Promise<CreateBookingDto>;
-
+  ]);
   const noWindowsTablesAvailable = false;
   const noHallTablesAvailable = false;
 
   const noTablesAvailable =
     noWindowsTablesAvailable && noWindowsTablesAvailable;
 
-  const booking = {
-    booking_date: dateUTC,
-    booking_status: BookingStatusEnum.PENDING,
-    tableId: tables[0]?.id,
-    userId: user?.id as string,
-    booking_time: timeUTC,
-    booking_name: user?.email as string,
-    booking_details: '',
-    pax,
-  } as Bookings;
+  const booking = useMemo(() => {
+    return {
+      booking_date: dateUTC,
+      booking_status: BookingStatusEnum.PENDING,
+      tableId: tables[0]?.id,
+      userId: user?.id as string,
+      booking_time: timeUTC,
+      booking_name: user?.email as string,
+      booking_details: '',
+      pax,
+    };
+  }, [dateUTC, pax, tables, timeUTC, user]) as Bookings;
 
-  const [openDesktop, setOpenDesktop] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-
-  const [checkoutOpenModal, setCheckoutModalOpen] = useState(false);
+  const tableCapacity = TableTypeEnum.W === selectedTableType ? 4 : 12;
 
   return {
     handleCreateBooking,
@@ -178,23 +173,18 @@ export const useNewBooking = ({
     booking,
     timeSlots,
     selectedTime,
-    setSelectedTime,
     selectedTableType,
     pax,
-    tableCapacity: TableTypeEnum.W === selectedTableType ? 4 : 12,
-    error,
-    availability,
-    isLoadingAvailability,
+    tableCapacity,
     selectedDate,
+    error,
     noWindowsTablesAvailable,
     noHallTablesAvailable,
     noTablesAvailable,
-    openDesktop,
-    setOpenDesktop,
-
     openModal,
     setOpenModal,
     checkoutOpenModal,
     setCheckoutModalOpen,
+    handleCheckoutModalOpen,
   };
 };
