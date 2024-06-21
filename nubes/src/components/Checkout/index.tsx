@@ -1,8 +1,8 @@
 'use client';
 
+import { CreateBookingDto } from '@/custom.types';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { useEffect } from 'react';
-import { CreateBookingDto } from '../../../../nubes-back/src/bookings/dto/create-bookings.dto';
 
 initMercadoPago(process.env.NEXT_PUBLIC_MERPAGO_PUBLIC_KEY!);
 

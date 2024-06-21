@@ -1,4 +1,4 @@
-import { Bookings, BookingStatus, BookingStatusEnum } from '@/custom.types';
+import { Bookings, BookingStatusEnum } from '@/custom.types';
 import {
   CheckCircledIcon,
   CrossCircledIcon,
@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/hover-card';
 
 export const statuses: Array<{
-  value: BookingStatus;
+  value: BookingStatusEnum;
   label: string;
   icon?: any;
   className: string;

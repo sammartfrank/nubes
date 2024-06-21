@@ -6,8 +6,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { BookingDetail } from './BookingDetail';
-import { Bookings } from '@/custom.types';
-import { CreateBookingDto } from '../../../../../../nubes-back/src/bookings/dto/create-bookings.dto';
+import { Bookings, CreateBookingDto } from '@/custom.types';
+
 
 type DesktopDialog = {
   open: boolean;

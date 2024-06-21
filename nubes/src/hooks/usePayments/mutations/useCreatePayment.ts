@@ -1,7 +1,7 @@
-import { CreatePaymentDto } from './../../../../../nubes-back/src/payment/dto/create-payment.dto';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { paymentRequest } from '../../utils/request';
 import { Session } from '@supabase/supabase-js';
+import { CreatePaymentDto } from '@/custom.types';
 
 export const useCreatePaymentMutation = ({
   access_token,

@@ -1,9 +1,8 @@
-import { Bookings } from '@/custom.types';
+import { Bookings, CreateBookingDto } from '@/custom.types';
 import { DesktopDialog } from './DesktopDialog';
 import { useMediaQuery } from '@/src/hooks';
 import { MobileDrawer } from './MobileDrawer';
 import { appTermsConfig } from '@/configs/appConfig';
-import { CreateBookingDto } from '../../../../../../nubes-back/src/bookings/dto/create-bookings.dto';
 
 export type CheckoutModalProps = {
   open: boolean;

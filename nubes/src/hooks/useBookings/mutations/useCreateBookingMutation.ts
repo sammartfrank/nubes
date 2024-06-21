@@ -1,7 +1,7 @@
-import { CreateBookingDto } from './../../../../../nubes-back/src/bookings/dto/create-bookings.dto';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { bookingsRequest } from '../../utils/request';
 import { Session } from '@supabase/supabase-js';
+import { CreateBookingDto } from '@/custom.types';
 
 export const useCreateBookingMutation = ({
   access_token,

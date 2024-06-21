@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { bookingsRequest } from '../../utils/request';
 import { Session } from '@supabase/supabase-js';
-import { BookingsUpdate } from '@/custom.types';
+import { UpdateBookingStatusDto } from '@/custom.types';
 
 export const useUpdateBookingStatusMutation = ({
   access_token,
@@ -11,11 +11,15 @@ export const useUpdateBookingStatusMutation = ({
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['updateBookingStatus'],
-    mutationFn: async (body: BookingsUpdate) => {
-      return bookingsRequest<BookingsUpdate>('PATCH', `/bookings/${body.id}`, {
-        access_token,
-        body,
-      });
+    mutationFn: async (body: UpdateBookingStatusDto) => {
+      return bookingsRequest<UpdateBookingStatusDto>(
+        'PATCH',
+        `/bookings/${body.id}`,
+        {
+          access_token,
+          body,
+        },
+      );
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['getBookings'] });

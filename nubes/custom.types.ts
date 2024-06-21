@@ -1,9 +1,4 @@
-import {
-  Tables as Table,
-  TablesInsert,
-  Enums,
-  TablesUpdate,
-} from './database.types';
+import { Tables as Table, Enums } from './database.types';
 
 export type NavbarConfig = {
   admin: { href: string; text: string }[];
@@ -26,6 +21,10 @@ export enum TableTypeEnum {
   H = 'Hall',
 }
 
+export enum TableType {
+  Window = 'Window',
+  Hall = 'Hall',
+}
 export enum BookingStatusEnum {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
@@ -33,18 +32,8 @@ export enum BookingStatusEnum {
 }
 
 export type Bookings = Table<'bookings'>;
-export type BookingsInsert = TablesInsert<'bookings'>;
-export type BookingsUpdate = TablesUpdate<'bookings'>;
-export type BookingStatus = Enums<'bookings_booking_status_enum'>;
-export type BookingsDelete = TablesUpdate<'bookings'>;
-
 export type Users = Table<'users'>;
-export type UsersInsert = TablesInsert<'users'>;
-
 export type Payment = Table<'payment'>;
-export type PaymentInsert = TablesInsert<'payment'>;
-export type PaymentMethod = Enums<'payment_payment_method_enum'>;
-export type PaymentStatus = Enums<'payment_payment_status_enum'>;
 
 export enum PaymentMethodEnum {
   CARD = 'card',
@@ -55,3 +44,35 @@ export enum PaymentStatusEnum {
   APPROVED = 'APPROVED',
   CANCELLED = 'CANCELLED',
 }
+export type CreateBookingDto = {
+  booking_name: string;
+  booking_details: string;
+  booking_status: BookingStatusEnum;
+  booking_date: string;
+  booking_time: string;
+  pax: number;
+  table_type: TableTypeEnum;
+  tableId: string;
+  userId: string;
+};
+
+export type CreatePaymentDto = {
+  amount: number;
+  payment_date: string;
+  external_status: string;
+  status_detail: string;
+  external_reference: string;
+  merchant_order_id: string;
+  payment_mepa_id: string;
+  collection_id: string;
+  collection_status: string;
+  bookingId: string;
+  userId: string;
+  payment_method: PaymentMethodEnum;
+  payment_status: PaymentStatusEnum;
+};
+
+export type UpdateBookingStatusDto = {
+  id: string;
+  booking_status: BookingStatusEnum;
+};

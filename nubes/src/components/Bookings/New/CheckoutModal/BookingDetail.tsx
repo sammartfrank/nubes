@@ -1,8 +1,8 @@
 import { Separator } from '@/components/ui/separator';
-import { Bookings } from '@/custom.types';
+import { Bookings, CreateBookingDto } from '@/custom.types';
 
 import dynamic from 'next/dynamic';
-import { CreateBookingDto } from '../../../../../../nubes-back/src/bookings/dto/create-bookings.dto';
+
 const Checkout = dynamic(
   () => import('../../../Checkout').then((mod) => mod.Checkout),
   {

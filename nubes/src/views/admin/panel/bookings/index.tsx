@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Bookings } from '@/custom.types';
-import { BookingsTable } from '@/src/components/Bookings/BookingsTable';
+import { BookingsTableView } from '@/src/components/Bookings/BookingsTable';
 
 export const AdminBookingsSection = ({
   bookings,
@@ -16,9 +16,7 @@ export const AdminBookingsSection = ({
       <header>
         <h2 className="font-bold mb-2 text-4xl">Bookings</h2>
       </header>
-      <main>
-        <BookingsTable bookings={bookings} />
-      </main>
+      <main></main>
     </section>
   );
 };

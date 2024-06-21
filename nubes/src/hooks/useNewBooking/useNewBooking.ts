@@ -10,11 +10,14 @@ import { useAvailabilityByDate } from '../useAvailability/queries/useAvailabilit
 import { useBookingsQuery, useCreateBookingMutation } from '../useBookings';
 import { useTablesQuery } from '../useTables';
 
-import { Bookings, BookingStatusEnum, TableTypeEnum } from '@/custom.types';
+import {
+  Bookings,
+  BookingStatusEnum,
+  CreateBookingDto,
+  TableTypeEnum,
+} from '@/custom.types';
 import { generateTimeSlots } from '@/src/components/Bookings/utils';
 
-import { TableType } from '../../../../nubes-back/src/tables/tables.entity';
-import { CreateBookingDto } from '../../../../nubes-back/src/bookings/dto/create-bookings.dto';
 
 export const useNewBooking = ({
   user,
@@ -90,21 +93,26 @@ export const useNewBooking = ({
     const booking = {
       booking_date: dateUTC,
       booking_status: BookingStatusEnum.PENDING,
+
+      // Harcoded
       tableId: tables[0]?.id,
+
       userId: user?.id as string,
       booking_time: timeUTC,
       booking_name: user?.email as string,
-      booking_details: '',
-      table_type: 'Window' as TableType,
+      booking_details: '' as string,
+
+      // Hardcoded
+      table_type: 'Window' as TableTypeEnum,
       pax,
-    };
+    } as CreateBookingDto;
 
     console.log({ booking });
 
     if (!selectedDate || !selectedTime || !pax) {
       setError('Por favor, complete todos los campos antes de enviar.');
       toast.error('Por favor, complete todos los campos antes de enviar.');
-      return;
+      return Promise.reject();
     }
     setError('');
     return createBookingMutation.mutateAsync(
@@ -188,7 +196,5 @@ export const useNewBooking = ({
     setOpenModal,
     checkoutOpenModal,
     setCheckoutModalOpen,
-
-    // handleDeleteBooking,
   };
 };

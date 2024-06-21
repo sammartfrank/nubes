@@ -4,7 +4,6 @@ import {
   BookingStatusEnum,
   PaymentMethodEnum,
   PaymentStatusEnum,
-  type PaymentStatus,
 } from '@/custom.types';
 import {
   BOOKINGS_API_URL,
@@ -65,7 +64,7 @@ export async function GET(request: NextRequest) {
     merchant_order_id: searchParams.get('merchant_order_id') as string,
     amount: 1,
     payment_method: PaymentMethodEnum.CARD,
-    payment_status: PaymentStatusEnum.APPROVED as PaymentStatus,
+    payment_status: PaymentStatusEnum.APPROVED,
     userId,
     bookingId: bookings[0]?.id,
     payment_date: new Date().toISOString(),

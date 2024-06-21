@@ -1,4 +1,4 @@
-import { Database, Enums, Tables } from 'database.types';
+import { Database, Enums, Tables } from './database.types';
 
 export type Booking = Tables<'bookings'>;
 export type User = Tables<'users'>;

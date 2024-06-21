@@ -7,9 +7,9 @@ import { AdminUsersSection } from './users';
 import { Session } from '@supabase/supabase-js';
 
 export const AdminPanel = ({ session }: { session: Session }) => {
-  const { data: bookings, isLoading: isLoadingBookings } = useBookingsQuery(
-    session.access_token,
-  );
+  const { data: bookings, isLoading: isLoadingBookings } = useBookingsQuery({
+    access_token: session?.access_token,
+  });
   const { data: users, isLoading: isLoadingUsers } = useUsersQuery(
     session.access_token,
   );

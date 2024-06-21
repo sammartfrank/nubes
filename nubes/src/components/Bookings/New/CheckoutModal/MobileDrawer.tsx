@@ -10,8 +10,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { BookingDetail } from './BookingDetail';
-import { Bookings } from '@/custom.types';
-import { CreateBookingDto } from '../../../../../../nubes-back/src/bookings/dto/create-bookings.dto';
+import { Bookings, CreateBookingDto } from '@/custom.types';
 
 type DrawerDialog = {
   open: boolean;
