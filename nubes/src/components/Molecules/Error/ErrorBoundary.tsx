@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { deriveErrorState } from './utils';
 
 export const ErrorBoundary = ({
@@ -25,7 +26,7 @@ export const ErrorBoundary = ({
           {home && (
             <button
               className="mt-8 bg-gradient-to-r from-zinc-500 to-zinc-600 hover:from-zinc-600 hover:to-zinc-700 text-white font-semibold px-6 py-3 rounded-md"
-              onClick={() => reset()}
+              onClick={() => redirect('/')}
             >
               Go to home
             </button>

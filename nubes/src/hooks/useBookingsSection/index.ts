@@ -7,11 +7,10 @@ import { Session, User } from '@supabase/supabase-js';
 import { Bookings, BookingStatusEnum } from '@/custom.types';
 import { useUpdateBookingStatusMutation } from '../useBookings/mutations/useUpdateBookingStatusMutation';
 import { useBookingsQuery } from '../useBookings/queries/useBookingsQuery';
-import { set } from 'react-hook-form';
 
 type UseBookingsSectionProps = {
   access_token: Session['access_token'];
-  user: User;
+  user: User | null;
 };
 
 export const useBookingsSection = ({
@@ -19,7 +18,7 @@ export const useBookingsSection = ({
   user,
 }: UseBookingsSectionProps) => {
   const [isCancelOpen, setIsCancelOpen] = useState(false);
-  const [bookingDetails, setBookingDetails] = useState<Bookings | undefined>();
+  const [bookingDetails, setBookingDetails] = useState<Bookings>();
   const [detailModalIsOpen, setDetailModalIsOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const updateBookingStatusMutation = useUpdateBookingStatusMutation({
@@ -27,7 +26,7 @@ export const useBookingsSection = ({
   });
 
   const urlSearchParams = new URLSearchParams();
-  urlSearchParams.append('userId', user?.id);
+  urlSearchParams.append('userId', user?.id ?? '');
 
   const { data: bookings = [], isLoading: isLoadingBookings } =
     useBookingsQuery({

@@ -31,19 +31,15 @@ export class BookingsController {
         bookingStatus,
       });
     } else {
-      console.log({ allBookings: true });
       return this.bookingsService.getAllBookings();
     }
   }
   @UseGuards(SupabaseAuthGuard)
   @Post()
   async createBooking(@Body() createBookingDto: CreateBookingDto) {
-    console.log(
-      '🚀 ~ BookingsController ~ createBooking ~ createBookingDto:',
-      createBookingDto,
-    );
     return this.bookingsService.createBooking(createBookingDto);
   }
+
   @UseGuards(SupabaseAuthGuard)
   @Patch(':bookingId')
   async updateBooking(

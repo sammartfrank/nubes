@@ -12,6 +12,7 @@ import {
   BOOKING_UPDATE_STATUS_ERROR_URL,
   BOOKINGS_URL,
   BOOKINGS_ERROR_URL,
+  MethodsEnum,
 } from '@/utils/constants';
 
 export async function GET(request: NextRequest) {
@@ -39,20 +40,20 @@ export async function GET(request: NextRequest) {
   const bookingsResponse = await fetch(
     `${BOOKINGS_API_URL}?${urlSearchParams}`,
     {
-      method: 'GET',
+      method: MethodsEnum.GET,
       headers,
     },
   );
 
-  if (bookingsResponse.status !== 200) {
+  if (!bookingsResponse.ok) {
     console.error('Failed to fetch bookings');
     return NextResponse.redirect(
       new URL(BOOKINGS_ERROR_URL, origin).toString(),
     );
   }
 
+  // Last Pending booking ID
   const bookings = await bookingsResponse.json();
-  console.log('🚀 ~ GET ~ bookings:', bookings);
 
   const payload = {
     collection_id: searchParams.get('collection_id') as string,
@@ -62,21 +63,23 @@ export async function GET(request: NextRequest) {
     status_detail: (searchParams.get('status_detail') as string) ?? 'approved',
     external_reference: searchParams.get('external_reference') as string,
     merchant_order_id: searchParams.get('merchant_order_id') as string,
+    payment_date: new Date().toISOString(),
+
+    // Harcoded values
     amount: 1,
     payment_method: PaymentMethodEnum.CARD,
     payment_status: PaymentStatusEnum.APPROVED,
-    userId,
     bookingId: bookings[0]?.id,
-    payment_date: new Date().toISOString(),
+    userId,
   };
 
   const paymentPost = await fetch(PAYMENTS_API_URL, {
-    method: 'POST',
+    method: MethodsEnum.POST,
     headers,
     body: JSON.stringify({ ...payload }),
   });
 
-  if (paymentPost.ok) {
+  if (!paymentPost.ok) {
     console.error('\x1b[31m', 'Payment creation failed');
     console.log({ paymentPost });
     return NextResponse.redirect(
@@ -84,17 +87,18 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const bookingUpdateFetch = await fetch(
+  const bookingUpdatePatch = await fetch(
     `${BOOKINGS_API_URL}/${bookings[0].id}`,
     {
-      method: 'PATCH',
+      method: MethodsEnum.PATCH,
       headers,
-      body: JSON.stringify({ booking_status: 'APPROVED' }),
+      body: JSON.stringify({ booking_status: BookingStatusEnum.APPROVED }),
     },
   );
 
-  if (bookingUpdateFetch.ok) {
+  if (!bookingUpdatePatch.ok) {
     console.error('\x1b[31m', 'Booking update failed');
+    console.log({ bookingUpdatePatch });
     return NextResponse.redirect(
       new URL(BOOKING_UPDATE_STATUS_ERROR_URL, origin).toString(),
     );

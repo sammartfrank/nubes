@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import { User } from '@supabase/supabase-js';
 
 import { CheckoutDesktopModal } from './CheckoutModal';
+import { Spinner } from '../../Loader';
 
 export const NewBookingForm = ({
   user,
@@ -39,7 +40,11 @@ export const NewBookingForm = ({
     handleCheckoutModalOpen,
     handleCreateBooking,
     setCheckoutModalOpen,
+    isLoadingBookings,
+    isLoadingTables,
   } = useNewBooking({ user, access_token });
+
+  if (isLoadingBookings || isLoadingTables) return <Spinner />;
   return (
     <form className="flex flex-col gap-5 text-center">
       <div className="flex flex-col lg:flex-row gap-2">

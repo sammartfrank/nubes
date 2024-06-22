@@ -11,7 +11,6 @@ export class PaymentsController {
   @UseGuards(SupabaseAuthGuard)
   @Post()
   async create(@Body() paymentData: CreatePaymentDto): Promise<Payment> {
-    console.log('🚀 ~ PaymentsController ~ create ~ paymentData:', paymentData);
     return this.paymentsService.createPayment(paymentData);
   }
 }

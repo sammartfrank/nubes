@@ -1,4 +1,3 @@
-import { UserOutlined as UserIcon } from '@ant-design/icons';
 import {
   Select,
   SelectContent,
@@ -33,11 +32,7 @@ export const PaxPicker = ({
             <SelectValue placeholder="Elegir cantidad de Personas" />
           </SelectTrigger>
           <SelectContent>
-            <SelectGroup
-              onChange={(value) => {
-                console.log('handleSelectedPax', value);
-              }}
-            >
+            <SelectGroup>
               <SelectLabel>Mesa Familiar</SelectLabel>
               {[...Array(tableCapacity)].map((_, i) => (
                 <SelectItem

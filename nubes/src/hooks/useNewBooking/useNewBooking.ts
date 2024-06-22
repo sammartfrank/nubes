@@ -34,10 +34,30 @@ export const useNewBooking = ({
   const [openModal, setOpenModal] = useState(false);
   const [checkoutOpenModal, setCheckoutModalOpen] = useState(false);
 
-  const handleCheckoutModalOpen = useCallback(
-    () => setCheckoutModalOpen(true),
-    [],
-  );
+  const [pax, setPax] = useState(1);
+
+  const handleSelectedPax = useCallback((pax: number) => {
+    setPax(pax);
+  }, []);
+
+  const [selectedTableType, setSelectedTableType] =
+    useState<TableTypeEnum | null>(null);
+
+  const handleSelectedTableType = useCallback((tableType: TableTypeEnum) => {
+    setSelectedTableType(tableType);
+    setPax(1);
+  }, []);
+
+  const handleCheckoutModalOpen = useCallback(() => {
+    if (!selectedDate || !selectedTime || !pax || !selectedTableType) return;
+    setCheckoutModalOpen(true);
+  }, [
+    selectedDate,
+    selectedTime,
+    setCheckoutModalOpen,
+    pax,
+    selectedTableType,
+  ]);
 
   const dateUTC = selectedDate.toISOString().split('T')[0];
   const timeUTC =
@@ -77,20 +97,6 @@ export const useNewBooking = ({
       access_token,
     });
 
-  const [selectedTableType, setSelectedTableType] =
-    useState<TableTypeEnum | null>(null);
-
-  const handleSelectedTableType = useCallback((tableType: TableTypeEnum) => {
-    setSelectedTableType(tableType);
-    setPax(1);
-  }, []);
-
-  const [pax, setPax] = useState(1);
-
-  const handleSelectedPax = useCallback((pax: number) => {
-    setPax(pax);
-  }, []);
-
   const handleCreateBooking = useCallback(() => {
     const booking = {
       booking_date: dateUTC,
@@ -105,11 +111,12 @@ export const useNewBooking = ({
       pax,
     } as CreateBookingDto;
 
-    if (!selectedDate || !selectedTime || !pax) {
+    if (!selectedDate || !selectedTime || !pax || !selectedTableType) {
       setError('Por favor, complete todos los campos antes de enviar.');
       toast.error('Por favor, complete todos los campos antes de enviar.');
       return Promise.reject();
     }
+
     setError('');
     return createBookingMutation.mutateAsync(
       {
@@ -152,6 +159,8 @@ export const useNewBooking = ({
     return {
       booking_date: dateUTC,
       booking_status: BookingStatusEnum.PENDING,
+
+      // TODO: add logic and remove Harcoded ID.
       tableId: tables[0]?.id,
       userId: user?.id as string,
       booking_time: timeUTC,
@@ -186,5 +195,7 @@ export const useNewBooking = ({
     checkoutOpenModal,
     setCheckoutModalOpen,
     handleCheckoutModalOpen,
+    isLoadingTables,
+    isLoadingBookings,
   };
 };

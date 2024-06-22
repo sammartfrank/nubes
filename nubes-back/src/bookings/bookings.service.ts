@@ -34,8 +34,6 @@ export class BookingsService {
       .eq('booking_status', bookingStatus)
       .order('created_at', { ascending: false });
 
-    console.log({ data, error });
-
     if (error) {
       throw error;
     }
@@ -47,11 +45,6 @@ export class BookingsService {
       const { data, error } = await supabase
         .from('bookings')
         .insert([{ ...createBookingDto }]);
-      console.log(
-        '🚀 ~ BookingsService ~ createBooking ~ data, error :',
-        data,
-        error,
-      );
 
       if (error) {
         console.log('Booking Error:', error);
@@ -66,11 +59,6 @@ export class BookingsService {
   }
 
   async updateBooking(bookingId: string, updateBookingDto: BookingUpdate) {
-    console.log(
-      '🚀 ~ BookingsService ~ updateBooking ~ updateBookingDto:',
-      updateBookingDto,
-    );
-    console.log('🚀 ~ BookingsService ~ updateBooking ~ bookingId:', bookingId);
     const { data, error } = await supabase
       .from('bookings')
       .update(updateBookingDto)

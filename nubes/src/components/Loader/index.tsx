@@ -12,9 +12,17 @@ export const Loader = () => {
 };
 
 export const Spinner = () => {
-return (
-  <div className="flex justify-center items-center h-full">
-    <div className="w-[50px] h-[50px] border-2 border-accent border-t-primary rounded-full animate-spin"></div>
-  </div>
-);
-}
+  return (
+    <div className="flex justify-center items-center h-full">
+      <div className="w-[50px] h-[50px] border-2 border-accent border-t-primary rounded-full animate-spin"></div>
+    </div>
+  );
+};
+
+export const LoaderSpinner = () => {
+  return (
+    <div className="w-screen h-screen flex justify-center items-center">
+      <Spinner />
+    </div>
+  );
+};

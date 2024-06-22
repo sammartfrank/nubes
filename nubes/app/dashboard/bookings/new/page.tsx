@@ -1,7 +1,9 @@
 import { BOOKING_ITEM, client } from '@/configs/clients/merpagoClient';
 import { NewBookingForm } from '@/src/components/Bookings/New/Form';
+import { LoaderSpinner, Spinner } from '@/src/components/Loader';
 import { createClient } from '@/utils/supabase/server';
 import { Preference } from 'mercadopago';
+import { Suspense } from 'react';
 
 export default async function NewBookingPage() {
   const supabase = createClient();
@@ -30,11 +32,13 @@ export default async function NewBookingPage() {
 
   return (
     <div className="container mx-auto flex items-center justify-center mt-24">
-      <NewBookingForm
-        user={user}
-        access_token={session?.access_token!}
-        preferenceCreated={preferenceCreated.id!}
-      />
+      <Suspense fallback={<LoaderSpinner />}>
+        <NewBookingForm
+          user={user}
+          access_token={session?.access_token!}
+          preferenceCreated={preferenceCreated.id!}
+        />
+      </Suspense>
     </div>
   );
 }

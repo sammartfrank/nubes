@@ -18,7 +18,6 @@ export const BOOKINGS_API_URL = `${BACKEND_API_URL}/bookings`;
 export const USERS_API_URL = `${BACKEND_API_URL}/users`;
 export const PAYMENTS_API_URL = `${BACKEND_API_URL}/payments`;
 
-
 //errors
 export const PAYMENTS_ERROR_URL = `/dashboard/payments/error`;
 export const BOOKINGS_ERROR_URL = `/dashboard/bookings/error`;
@@ -42,3 +41,12 @@ export const ADMIN_BOOKINGS_API_URL = '/admin/api/bookings';
 // Roles
 export const ADMIN_ROLE = 'admin';
 export const USER_ROLE = 'authenticated';
+
+// Methods
+export enum MethodsEnum {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH',
+}

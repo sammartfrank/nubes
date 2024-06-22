@@ -16,7 +16,6 @@ export class PaymentsService {
         console.log('Payment Error:', error);
         throw new Error(`Failed to create payment: ${error.message}`);
       }
-      console.log('Payment:', data);
       return data as Payment;
     } catch (error) {
       console.log('Error:', error);
